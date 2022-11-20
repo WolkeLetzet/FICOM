@@ -2,7 +2,8 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "dbrefresh":"php artisan migration:refresh && php artisan db:seed"
     },
     "devDependencies": {
         "@popperjs/core": "^2.10.2",
