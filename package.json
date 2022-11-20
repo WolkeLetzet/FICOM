@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "dbrefresh":"php artisan migration:refresh && php artisan db:seed"
+        "dbrefresh":"php artisan migrate:refresh && php artisan db:seed"
     },
     "devDependencies": {
         "@popperjs/core": "^2.10.2",
