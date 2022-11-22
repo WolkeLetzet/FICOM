@@ -49,6 +49,18 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('nuevoEstudiante') }}">Estudiante nuevo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('listarEstudiantes') }}">Listado de estudiantes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Generador de registros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Subir registros</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
