@@ -13,23 +13,44 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+
+              <tr class="table-light">
                 <td>Mark</td>
                 <td>Otto</td>
                 <td>11111111-1</td>
+                <td >Sin Beneficios</td>
               </tr>
-              <tr>
+              <tr class="table-primary">
                 <td>Jacob</td>
                 <td>Thornton</td>
                 <td>11111111-1</td>
+                <td >Prioritario</td>
               </tr>
-              <tr>
+              <tr class="table-danger">
                 <td>Larry the Bird</td>
                 <td>Thornton</td>
                 <td>11111111-1</td>
+                <td >Nuevo Prioritario</td>
               </tr>
             </tbody>
           </table>
+    </div>
+
+    <div class="container">
+      <div class="grid">
+        <div class="row">
+          <div class="col">
+            <pre>
+            {{json_encode($estudiantes , JSON_PRETTY_PRINT); }}
+            </pre>
+          </div>
+          <div class="col">
+            <pre>
+              {{json_encode($apoderados , JSON_PRETTY_PRINT); }}
+            </pre>
+          </div>
+        </div>
+      </div>
     </div>
 
 </div>

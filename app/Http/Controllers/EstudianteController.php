@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apoderado;
+use App\Models\Curso;
 use App\Models\Estudiante;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,8 @@ class EstudianteController extends Controller
      */
     public function index()
     {
-        return view('estudiante.listar');
+        return view('estudiante.listar')->with('estudiantes',Estudiante::with(['curso','apoderado'])->get())
+                                        ->with('apoderados',Apoderado::all());
     }
 
     /**
