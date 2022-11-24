@@ -12,8 +12,7 @@ class Curso extends Model
 
     protected $fillable = [
         'id',
-        'nivel',
-        'grado',
+        'curso',
         'paralelo',
     ];
     /**
