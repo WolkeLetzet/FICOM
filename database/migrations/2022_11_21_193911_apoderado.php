@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('apoderados', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_completo');
+            $table->string('apellidos');
+            $table->string('nombres');
             $table->string('telefono');
             $table->string('email')->unique();
+            $table->string('direccion');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('apoderados');
     }
 };

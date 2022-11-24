@@ -25,5 +25,5 @@ Route::get('/estudiante/nuevo', function () {
     return view('estudiante/crear');
 })->name('nuevoEstudiante');
 Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
-Route::get('/estudiante/{$id}/editar', [App\Http\Controllers\EstudianteController::class, 'showEditar'])->name('showEditar');
+Route::get('/estudiante/{$id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
 Route::get('/estudiante/{$id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagos');

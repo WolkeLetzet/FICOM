@@ -25,5 +25,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $role=Role::create(['name' => 'admin']);
         $user->assignRole('admin');
+
+        \App\Models\Estudiante::factory(10)->create();
     }
 }
