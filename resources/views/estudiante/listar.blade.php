@@ -13,25 +13,31 @@
               </tr>
             </thead>
             <tbody>
-
-              <tr class="table-light">
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>11111111-1</td>
-                <td >Sin Beneficios</td>
+              @foreach ($estudiantes as $estud)
+                
+              
+              <tr 
+              @if ($estud->prioridad == 1)
+                class="table-light"
+              @elseif ($estud->prioridad == 2)
+                class="table-danger"
+              @elseif ($estud->prioridad == 3)
+                class="table-primary"
+              @endif>
+                <td>{{$estud->nombres}}</td>
+                <td>{{$estud->apellidos}}</td>
+                <td>{{$estud->rut}}</td>
+                <td >
+                  @if ($estud->prioridad == 1)
+                    Sin Beneficios
+                  @elseif ($estud->prioridad == 2)
+                    Nuevo Prioritario
+                  @elseif ($estud->prioridad == 3)
+                    Prioritario
+                  @endif
+                </td>
               </tr>
-              <tr class="table-primary">
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>11111111-1</td>
-                <td >Prioritario</td>
-              </tr>
-              <tr class="table-danger">
-                <td>Larry the Bird</td>
-                <td>Thornton</td>
-                <td>11111111-1</td>
-                <td >Nuevo Prioritario</td>
-              </tr>
+              @endforeach
             </tbody>
           </table>
     </div>
