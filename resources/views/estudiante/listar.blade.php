@@ -36,6 +36,11 @@
                     Prioritario
                   @endif
                 </td>
+                <td>
+                  <button class="btn btn-primary">
+                    <i class="bi bi-person"></i>
+                  </button>
+                </td>
               </tr>
               @endforeach
             </tbody>
