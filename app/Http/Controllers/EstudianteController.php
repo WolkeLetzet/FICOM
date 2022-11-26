@@ -17,7 +17,7 @@ class EstudianteController extends Controller
     public function index()
     {
         return view('estudiante.listar')->with('estudiantes',Estudiante::with(['curso','apoderado'])->get())
-                                        ->with('apoderados',Apoderado::all());
+        ->with('apoderados',Apoderado::all());
     }
 
     /**
@@ -25,9 +25,20 @@ class EstudianteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $req)
     {
-        //
+        try {
+            $estudiante = new Estudiante();
+            $estudiante->nombres = $req->nombres;
+            $estudiante->apellidos = $req->apellidos;
+            $estudiante->rut = $req->run;
+            $estudiante->prioridad = $req->prioridad;
+            $estudiante->save();
+    
+            return response('Estudiante creado con exito');
+        } catch (Exception $e) {
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+        }
     }
 
     /**

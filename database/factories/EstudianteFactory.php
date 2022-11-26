@@ -16,13 +16,13 @@ class EstudianteFactory extends Factory
      */
     public function definition()
     {
+        $prioridades = ['Sin Beneficios', 'Prioritario', 'Nuevo Prioritario'];
         return [
             'nombres' => fake()->firstName(),
             'apellidos' => fake()->lastName(),
             'es_nuevo' =>  rand(0,1) == 1,
-            'prioridad'=> rand(0,3),
+            'prioridad'=> $prioridades[rand(0,2)],
             'email_institucional' => fake()->email(),
-
         ];
     }
 }
