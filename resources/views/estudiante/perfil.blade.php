@@ -22,12 +22,11 @@
         </div>
         <div class="form-group mb-3 col-4">
             <label for="nivel" class="form-label">Nivel</label>
-            <input type="text" name="nivel" class="form-control" value="{{$estudiante->curso_id}}" disabled>
+            <input type="text" name="nivel" class="form-control" value="{{$estudiante->curso->curso}}" disabled>
         </div>
         <div class="form-group mb-3 col-4">
             <label for="prioridad" class="form-label">Prioridad</label>
             <select name="prioridad" class="form-control" disabled>
-                <option value="" selected disabled hidden>Selecciona una opción</option>
                 <option value="1" @if($estudiante->prioridad == 1) selected @endif>No proritario</option>
                 <option value="2" @if($estudiante->prioridad == 2) selected @endif>Nuevo proritario</option>
                 <option value="3" @if($estudiante->prioridad == 3) selected @endif>Proritario</option>
