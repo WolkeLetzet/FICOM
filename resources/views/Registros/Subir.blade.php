@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@if ($errors->any())
+@foreach ( $errors->all() as $error )
+    <div class="alert alert-danger">{{$error}}</div>
+@endforeach
+   
+@endif
+   
+
       <form action="{{ route('subirReg') }}" method="POST" enctype="multipart/form-data">
+         
          @csrf
          <div class="container" id="registros-container" style="background-color: white; height: 500px;">
             <div class="row p-2 pt-5">

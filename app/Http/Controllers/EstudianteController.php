@@ -47,7 +47,9 @@ class EstudianteController extends Controller
            
             $request->validate([
                 "file.*"=> "mimes:xml",
+                "file"=>"required"
             ]);
+            
             $file = $request->file('file');
             $a = Storage::disk('local')->put('docs',$file);
             $process = new Process([

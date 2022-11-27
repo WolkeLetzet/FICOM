@@ -35,4 +35,5 @@ Route::prefix('registros')->group(function () {
     Route::get('/subir', function () {
         return view('Registros.Subir');
     })->name('subidaMasiva');
+    Route::post('/subir',[EstudianteController::class,'storeMassive'])->name('subirReg');
 });
