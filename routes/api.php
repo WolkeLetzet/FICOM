@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EstudianteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/estudiante/crear', [App\Http\Controllers\EstudianteController::class, 'create'])->name('crearEstudiante');
+
+Route::prefix('registros')->group(function () {
+    Route::post('/subir',[EstudianteController::class,'storeMassive'])->name('subirReg');
+});

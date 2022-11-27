@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EstudianteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,3 +28,8 @@ Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'i
 Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('show');
 Route::get('/estudiante/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
 Route::get('/estudiante/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagos');
+Route::prefix('registros')->group(function () {
+    Route::get('/subir', function () {
+        return view('Registros.Subir');
+    })->name('subidaMasiva');
+});

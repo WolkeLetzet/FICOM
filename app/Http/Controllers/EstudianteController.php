@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Apoderado;
 use App\Models\Curso;
 use App\Models\Estudiante;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class EstudianteController extends Controller
 {
@@ -49,7 +53,38 @@ class EstudianteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+    }
+
+    /**
+     * Store massively resources in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeMassive(Request $request)
+    {
+        try {
+            $process = new Process(['python',storage_path('app\xml\dataConverter.py')]);
+            $process->run();
+
+            // executes after the command finishes
+            foreach ($process as $type => $data) {
+                if ($process::OUT === $type) {
+                    dd($data);
+                } else { // $process::ERR === $type
+                    dd($data);
+                }
+            }
+            
+            $file = $request->file('file');
+            $a = Storage::disk('local')->put('docs',$file);
+            
+            dd($file,$process->getOutput(),storage_path('app\xml\dataConverter.py'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 
     /**
