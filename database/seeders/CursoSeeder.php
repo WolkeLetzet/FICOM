@@ -37,65 +37,125 @@ class CursoSeeder extends Seeder
         $curso->save();
 
         $curso = new Curso([
-            'curso'=> 'Primero Basico',
+            'curso'=> '1°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Primero Basico',
+            'curso'=> '1°',
             'paralelo' => 'B'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Segundo Basico',
+            'curso'=> '2°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Tercero Basico',
+            'curso'=> '2°',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '3°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Cuarto Basico',
+            'curso'=> '3°',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '4°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Quinto Basico',
+            'curso'=> '4°',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '5°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Sexto Basico',
+            'curso'=> '5°',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '6°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Septimo Basico',
+            'curso'=> '6°',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '7°',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Octavo Basico',
+            'curso'=> '7°',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '8°',
             'paralelo' => 'A'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '8°',
+            'paralelo' => 'B'
         ]);
         $curso->save();
 
 
         $curso = new Curso([
-            'curso'=> 'Primero Medio',
+            'curso'=> '1°M',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Segundo Medio',
+            'curso'=> '1°M',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '2°M',
             'paralelo' => 'A'
         ]);
         $curso->save();
         $curso = new Curso([
-            'curso'=> 'Tercero Medio',
+            'curso'=> '2°M',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '3°M',
             'paralelo' => 'A'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '3°M',
+            'paralelo' => 'B'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '4°M',
+            'paralelo' => 'A'
+        ]);
+        $curso->save();
+        $curso = new Curso([
+            'curso'=> '4°M',
+            'paralelo' => 'B'
         ]);
         $curso->save();
 

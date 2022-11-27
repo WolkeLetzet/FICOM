@@ -25,7 +25,8 @@ Route::get('/estudiante/nuevo', function () {
     return view('estudiante/crear');
 })->name('nuevoEstudiante');
 Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
-Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('show');
+Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
+Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
 Route::get('/estudiante/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
 Route::get('/estudiante/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagos');
 Route::prefix('registros')->group(function () {

@@ -20,29 +20,8 @@ class EstudianteController extends Controller
      */
     public function index()
     {
-        return view('estudiante.listar')->with('estudiantes',Estudiante::with(['curso','apoderado'])->get())
-        ->with('apoderados',Apoderado::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $req)
-    {
-        try {
-            $estudiante = new Estudiante();
-            $estudiante->nombres = $req->nombres;
-            $estudiante->apellidos = $req->apellidos;
-            $estudiante->rut = $req->run;
-            $estudiante->prioridad = $req->prioridad;
-            $estudiante->save();
-    
-            return response('Estudiante creado con exito');
-        } catch (Exception $e) {
-            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
-        }
+        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->get())
+        ->with('apoderados', Apoderado::all());
     }
 
     /**
@@ -98,6 +77,37 @@ class EstudianteController extends Controller
         $estudiante = Estudiante::where('id', $id)->with(['curso','apoderado'])->get();
         return view('estudiante.perfil')->with('estudiante', $estudiante[0]);
     }
+    
+    public function pagos($id)
+    {
+        return view('estudiante.pagos');
+    }
+
+    public function getEstudiantesNuevos() {
+        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->where('es_nuevo', '1')->get())
+        ->with('apoderados', Apoderado::all());
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $req)
+    {
+        try {
+            $estudiante = new Estudiante();
+            $estudiante->nombres = $req->nombres;
+            $estudiante->apellidos = $req->apellidos;
+            $estudiante->rut = $req->run;
+            $estudiante->prioridad = $req->prioridad;
+            $estudiante->save();
+    
+            return response('Estudiante creado con exito');
+        } catch (Exception $e) {
+            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -131,10 +141,5 @@ class EstudianteController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function pagos($id)
-    {
-        return view('estudiante.pagos');
     }
 }
