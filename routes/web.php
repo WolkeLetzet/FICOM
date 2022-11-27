@@ -24,6 +24,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/estudiante/nuevo', function () {
     return view('estudiante/crear');
 })->name('nuevoEstudiante');
+Route::post('/estudiante/crear', [App\Http\Controllers\EstudianteController::class, 'create'])->name('crearEstudiante');
+
 Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
 Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
 Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');

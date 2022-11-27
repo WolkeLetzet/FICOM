@@ -96,14 +96,14 @@ class EstudianteController extends Controller
     public function create(Request $req)
     {
         try {
-            $estudiante = new Estudiante();
-            $estudiante->nombres = $req->nombres;
-            $estudiante->apellidos = $req->apellidos;
-            $estudiante->rut = $req->run;
-            $estudiante->prioridad = $req->prioridad;
-            $estudiante->save();
+            // $estudiante = new Estudiante();
+            // $estudiante->nombres = $req->nombres;
+            // $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
+            // $estudiante->rut = $req->run;
+            // $estudiante->prioridad = $req->prioridad;
+            // $estudiante->save();
     
-            return response('Estudiante creado con exito');
+            return redirect()->back()->with('status', 'Estudiante creado con exito!');
         } catch (Exception $e) {
             return response()->json(['status' => 400, 'message' => $e->getMessage()]);
         }

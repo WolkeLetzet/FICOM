@@ -1,7 +1,13 @@
 @extends('layouts.app')
 @section('content')
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
 <div class="container">
-    <form id="crearEstudiante" class="col-md-10 mt-3 row" onsubmit="crearEstudiante(event)">
+    <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="col-md-10 mt-3 row">
+        @csrf
         <h1>Estudiante</h1>
         <div class="form-group mb-3 col-3">
             <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
@@ -52,24 +58,4 @@
         </div>
     </form>
 </div>
-<script>
-    function crearEstudiante(event) {
-        event.preventDefault();
-
-        let data = {
-            apellidos: document.getElementById('apellido_paterno').value + ' ' + document.getElementById('apellido_materno').value,
-            nombres: document.getElementById('nombres').value,
-            run: document.getElementById('run').value,
-            nivel: document.getElementById('nivel').value,
-            prioridad: document.getElementById('prioridad').value,
-        }
-
-        axios.post('/api/estudiante/crear', data).then(res => {
-            console.log(res);
-            document.getElementById('crearEstudiante').reset();
-        }, err => {
-            console.log(err);
-        }) 
-    }
-</script>
 @endsection

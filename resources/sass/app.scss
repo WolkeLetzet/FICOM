@@ -11,3 +11,32 @@
 @import "font-awesome/scss/font-awesome.scss";
 
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+.alert {
+    max-width: 300px;
+    position: fixed;
+    top: 3rem;
+    right: 1rem;
+    text-align: center;
+    animation-name: alerta;
+    animation-duration: 2.5s;
+    opacity: 0;
+}
+
+@keyframes alerta {
+    0% {
+        opacity: 1;
+        transform: translateX(100%)
+    }
+    20% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+    90% {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}

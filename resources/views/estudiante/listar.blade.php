@@ -17,15 +17,15 @@
               @foreach ($estudiantes as $estud)
               <tr 
                 @switch ($estud->prioridad)
-                  @case(1)
+                  @case('Sin Beneficios')
                     class="table-light"
                     @break
                   
-                  @case(2)
+                  @case('Prioritario')
                     class="table-danger"
                     @break
                   
-                  @case(3)
+                  @case('Nuevo Prioritario')
                     class="table-primary"
                     @break
                 @endswitch
