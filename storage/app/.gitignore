@@ -1,4 +1,4 @@
 *
 !public/
 !.gitignore
-!xml/
+!xml/*.py
