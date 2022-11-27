@@ -44,7 +44,17 @@ class EstudianteController extends Controller
     public function storeMassive(Request $request)
     {
         try {
-            $process = new Process(['python',storage_path('app\xml\dataConverter.py')]);
+           
+            $request->validate([
+                "file.*"=> "mimes:xml",
+            ]);
+            $file = $request->file('file');
+            $a = Storage::disk('local')->put('docs',$file);
+            $process = new Process([
+                'python',
+                storage_path('app\xml\dataConverter.py'),
+                storage_path('app/'.$a)
+            ]);
             $process->run();
 
             // executes after the command finishes
@@ -56,10 +66,7 @@ class EstudianteController extends Controller
                 }
             }
             
-            $file = $request->file('file');
-            $a = Storage::disk('local')->put('docs',$file);
-            
-            dd($file,$process->getOutput(),storage_path('app\xml\dataConverter.py'));
+            return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
         }
