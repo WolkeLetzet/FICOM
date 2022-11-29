@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container">
     <div>
         <table class="table">
@@ -34,7 +35,7 @@
                 <td>{{$estud->apellidos}}</td>
                 <td>{{$estud->rut}}</td>
                 <td>{{$estud->prioridad}}</td>
-                <td>{{$estud->curso->curso}}</td>
+                <td>@if(isset($estud->curso)){{$estud->curso->curso . '-' . $estud->curso->paralelo}}@endif</td>
                 <td>
                   <a href="{{ route('showEstudiante', $estud->id) }}" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">

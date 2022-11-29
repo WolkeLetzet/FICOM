@@ -97,6 +97,9 @@ class EstudianteController extends Controller
         ->with('apoderados', Apoderado::all());
     }
 
+    public function showCrear() {
+        return view('estudiante/crear')->with('cursos', Curso::all());
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -105,16 +108,46 @@ class EstudianteController extends Controller
     public function create(Request $req)
     {
         try {
-            // $estudiante = new Estudiante();
-            // $estudiante->nombres = $req->nombres;
-            // $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
-            // $estudiante->rut = $req->run;
-            // $estudiante->prioridad = $req->prioridad;
-            // $estudiante->save();
-    
-            return redirect()->back()->with('status', 'Estudiante creado con exito!');
+            if($req->apellidos || $req->names || $req->telefono || $req->email || $req->direccion) {
+               $apoderado = new Apoderado();
+               $apoderado->apellidos = $req->apellidos;
+               $apoderado->nombres = $req->names;
+               $apoderado->telefono = $req->telefono;
+               $apoderado->email = $req->email;
+               $apoderado->direccion = $req->direccion;
+               $apoderado->save();
+            }
+
+            $estudiante = new Estudiante();
+            $estudiante->nombres = $req->nombres;
+            $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
+            $estudiante->rut = $req->run;
+            $estudiante->es_nuevo = 1;
+            $estudiante->curso_id = $req->nivel;
+            $estudiante->prioridad = $req->prioridad;
+            $estudiante->save();
+            
+
+            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante creado con exito!']);
         } catch (Exception $e) {
-            return response()->json(['status' => 400, 'message' => $e->getMessage()]);
+            $message = 'Ha ocurrido un error';
+            if(str_contains($e->getMessage(), 'apoderado')) $message = 'Completa todos los datos del apoderado!';
+            if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';
+            $es = [
+                'nombres' => $req->nombres,
+                'apellido_paterno' => $req->apellido_paterno,
+                'apellido_materno' => $req->apellido_materno,
+                'run' => $req->run,
+                'nivel' => $req->nivel,
+                'prioridad' => $req->prioridad,
+                'names' => $req->names,
+                'apellidos' => $req->apellidos,
+                'telefono' => $req->telefono,
+                'email' => $req->email,
+                'direccion' => $req->direccion
+            ];
+
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $es]);
         }
     }
 

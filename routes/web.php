@@ -21,9 +21,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/estudiante/nuevo', function () {
-    return view('estudiante/crear');
-})->name('nuevoEstudiante');
+Route::get('/estudiante/nuevo', [App\Http\Controllers\EstudianteController::class, 'showCrear'])->name('nuevoEstudiante');
 Route::post('/estudiante/crear', [App\Http\Controllers\EstudianteController::class, 'create'])->name('crearEstudiante');
 
 Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');

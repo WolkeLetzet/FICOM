@@ -22,7 +22,7 @@
         </div>
         <div class="form-group mb-3 col-4">
             <label for="nivel" class="form-label">Nivel</label>
-            <input type="text" name="nivel" class="form-control" value="{{$estudiante->curso->curso}}" disabled>
+            <input type="text" name="nivel" class="form-control" @if(isset($estudiante->curso)) value="{{$estudiante->curso->curso}}" @endif disabled>
         </div>
         <div class="form-group mb-3 col-4">
             <label for="prioridad" class="form-label">Prioridad</label>
