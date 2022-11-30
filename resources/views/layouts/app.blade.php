@@ -55,9 +55,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('listarEstudiantes') }}">Listado de estudiantes</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">Generador de registros</a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('subidaMasiva') }}">Subir registros</a>
                             </li>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container">
+<div class="container" id="table">
     <div>
         <table class="table">
             <thead>
@@ -33,7 +33,7 @@
               >
                 <td>{{$estud->nombres}}</td>
                 <td>{{$estud->apellidos}}</td>
-                <td>{{$estud->rut}}</td>
+                <td>{{$estud->rut.'-'.$estud->dv}}</td>
                 <td>{{$estud->prioridad}}</td>
                 <td>@if(isset($estud->curso)){{$estud->curso->curso . '-' . $estud->curso->paralelo}}@endif</td>
                 <td>
@@ -51,4 +51,13 @@
           </table>
     </div>
 </div>
+
+<style lang="scss">
+  div.container#table{
+      -webkit-box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
+      -moz-box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
+      box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
+      min-height: 500px
+  }
+</style>
 @endsection

@@ -19,10 +19,10 @@
         $estudiante = $res['estudiante'];
     @endphp
         
-    <div class="container">
+    <div class="container" id="form-container">
         <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="col-md-10 mt-3 row">
             @csrf
-            <h1>Estudiante</h1>
+            <h1 id="form-title">Estudiante</h1>
             <div class="form-group mb-3 col-md-3 col-6">
                 <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
                 <input type="text" id="apellido_paterno" name="apellido_paterno" value="{{$estudiante['apellido_paterno']}}" class="form-control" autofocus>
@@ -84,10 +84,10 @@
         </form>
     </div>
 @else
-<div class="container">
+<div class="container" id="form-container">
     <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="mt-3 row">
         @csrf
-        <h1>Estudiante</h1>
+        <h1 id="form-title">Estudiante</h1>
         <div class="form-group mb-3 col-md-3 col-6">
             <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
             <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control" required autofocus>
@@ -150,5 +150,18 @@
         </div>
     </form>
 </div>
+
 @endif
+
+<style lang="scss">
+    div.container#form-container{
+        -webkit-box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
+        box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
+        padding: .5rem 1.5rem;
+    }
+    button{
+        margin: 2rem 0 2rem 0 ;
+    }
+</style>
 @endsection
