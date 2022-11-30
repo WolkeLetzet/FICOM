@@ -63,12 +63,8 @@ class EstudianteController extends Controller
                 $process->run();
 
                 // executes after the command finishes
-                foreach ($process as $type => $data) {
-                    if ($process::OUT === $type) {
-                        dd($data);
-                    } else { // $process::ERR === $type
-                        return redirect()->back()->with("error","Error con el Registro");
-                    }
+                if (!$process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
                 }
                 return redirect()->back()->with('success','Registros subidos con Exito');
             }
@@ -84,12 +80,8 @@ class EstudianteController extends Controller
                 $process->run();
 
                 // executes after the command finishes
-                foreach ($process as $type => $data) {
-                    if ($process::OUT === $type) {
-                        dd($data);
-                    } else { // $process::ERR === $type
-                        return redirect()->back()->with("error","Error con el Registro");
-                    }
+                if (!$process->isSuccessful()) {
+                    throw new ProcessFailedException($process);
                 }
                 return redirect()->back()->with('success','Registros subidos con Exito');
 
@@ -97,12 +89,9 @@ class EstudianteController extends Controller
             else{
                 return redirect()->back()->with("error","Error con el Registro");
             }
-            
 
-            
-            
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->back()->with("error","Error con el Registro");
         }
         
     }
