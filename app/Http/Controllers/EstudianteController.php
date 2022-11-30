@@ -89,9 +89,12 @@ class EstudianteController extends Controller
             else{
                 return redirect()->back()->with("error","Error con el Registro");
             }
+            
 
+            
+            
         } catch (\Throwable $th) {
-            return redirect()->back()->with("error","Error con el Registro");
+            throw $th;
         }
         
     }

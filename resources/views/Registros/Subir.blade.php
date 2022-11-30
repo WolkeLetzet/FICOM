@@ -11,6 +11,7 @@
    <div class="alert alert-success">{{session('success')}}</div>
 @endif
 
+
    
 
       <form action="{{ route('subirReg') }}" method="POST" enctype="multipart/form-data">
