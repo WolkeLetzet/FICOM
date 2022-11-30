@@ -97,7 +97,7 @@ class EstudianteController extends Controller
     public function show($id)
     {
         $estudiante = Estudiante::where('id', $id)->with(['curso','apoderado'])->get();
-        return view('estudiante.perfil')->with('estudiante', $estudiante[0]);
+        return view('estudiante.perfil')->with(['estudiante' => $estudiante[0], 'cursos' => Curso::all()]);
     }
     
     public function pagos($id)
@@ -137,7 +137,9 @@ class EstudianteController extends Controller
             $estudiante->rut = $req->run;
             $estudiante->es_nuevo = 1;
             $estudiante->curso_id = $req->nivel;
+            
             $estudiante->prioridad = $req->prioridad;
+            if($apoderado) $estudiante->apoderado()->associate($apoderado);
             $estudiante->save();
             
 
@@ -145,6 +147,7 @@ class EstudianteController extends Controller
         } catch (Exception $e) {
             $message = 'Ha ocurrido un error';
             if(str_contains($e->getMessage(), 'apoderado')) $message = 'Completa todos los datos del apoderado!';
+            
             if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';
             $es = [
                 'nombres' => $req->nombres,
@@ -182,9 +185,39 @@ class EstudianteController extends Controller
      * @param  \App\Models\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $req)
     {
-        //
+        try {
+            $estudiante = Estudiante::where('id', $req->id)->first();
+            $estudiante->apellidos = $req->apellidos;
+            $estudiante->nombres = $req->nombres;
+            $estudiante->rut = $req->run;
+            $estudiante->prioridad = $req->prioridad;
+            $estudiante->email_institucional = $req->email_institucional;
+            $estudiante->curso_id = $req->nivel;
+            
+            //Si no tenia un apoderado, se crea uno y se le asocia
+            if($req->names || $req->lastnames || $req->telefono || $req->email || $req->direccion) {
+                if($req->apoderado) $apoderado = Apoderado::where('id', $req->apoderado)->first();
+                else $apoderado = new Apoderado();
+                $apoderado->nombres = $req->names;
+                $apoderado->apellidos = $req->lastnames;
+                $apoderado->email = $req->email;
+                $apoderado->telefono = $req->telefono;
+                $apoderado->direccion = $req->direccion;
+                
+                $apoderado->save();
+    
+                if(!$req->apoderado) $estudiante->apoderado()->associate($apoderado);
+            }
+            $estudiante->save();
+            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante actualizado con exito!']);;
+        } catch (Exception $e) {
+            $message = 'Ha ocurrido un error';
+            if(str_contains($e->getMessage(), 'apoderado')) $message = 'Completa todos los datos del apoderado!';
+            if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message]);
+        }
     }
 
     /**
