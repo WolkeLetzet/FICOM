@@ -23,7 +23,8 @@ def formatter(data):
          alumnos.append({
                "grado":grado,
                "letra":letra,
-               "run": alumno["@run"]+alumno["@digito_ve"],
+               "run": alumno["@run"],
+               "dv":alumno["@digito_ve"],
                "apellidos":alumno['@ape_paterno']+" "+ alumno['@ape_materno'],
                "nombres":alumno['@nombres'],
                "direccion":alumno["@direccion"],
