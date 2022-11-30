@@ -110,7 +110,7 @@ class EstudianteController extends Controller
     public function show($id)
     {
         $estudiante = Estudiante::where('id', $id)->with(['curso','apoderado'])->get();
-        return view('estudiante.perfil')->with('estudiante', $estudiante[0]);
+        return view('estudiante.perfil')->with('estudiante', $estudiante[0])->with('cursos',Curso::all());
     }
     
     public function pagos($id)
