@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Freshwork\ChileanBundle\Exceptions\InvalidFormatException;
+use Freshwork\ChileanBundle\Rut;
 
 class EstudianteController extends Controller
 {
@@ -132,6 +134,8 @@ class EstudianteController extends Controller
     public function create(Request $req)
     {
         try {
+            Rut::parse($req->run)->validate();
+            $rut= Rut::parse('123456785')->format(Rut::FORMAT_ESCAPED)->toArray();
             if($req->apellidos || $req->names || $req->telefono || $req->email || $req->direccion) {
                $apoderado = new Apoderado();
                $apoderado->apellidos = $req->apellidos;
@@ -145,15 +149,36 @@ class EstudianteController extends Controller
             $estudiante = new Estudiante();
             $estudiante->nombres = $req->nombres;
             $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
-            $estudiante->rut = $req->run;
+            $estudiante->rut = $rut[0];
+            $estudiante->dv = $rut[1];
             $estudiante->es_nuevo = 1;
+            $estudiante->direccion = $req->direccion;
+            $estudiante->telefono = $req->telefono;
             $estudiante->curso_id = $req->nivel;
             $estudiante->prioridad = $req->prioridad;
             $estudiante->save();
             
 
             return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante creado con exito!']);
-        } catch (Exception $e) {
+        }
+        catch(InvalidFormatException $e){
+            $message = "RUT Incorrecto";
+            $es = [
+                'nombres' => $req->nombres,
+                'apellido_paterno' => $req->apellido_paterno,
+                'apellido_materno' => $req->apellido_materno,
+                'run' => $req->run,
+                'nivel' => $req->nivel,
+                'prioridad' => $req->prioridad,
+                'names' => $req->names,
+                'apellidos' => $req->apellidos,
+                'telefono' => $req->telefono,
+                'email' => $req->email,
+                'direccion' => $req->direccion
+            ];
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $es]);
+        }
+        catch (Exception $e) {
             $message = 'Ha ocurrido un error';
             if(str_contains($e->getMessage(), 'apoderado')) $message = 'Completa todos los datos del apoderado!';
             if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';

@@ -15,12 +15,15 @@ class Estudiante extends Model
         'id',
         'nombres',
         'apellidos',
-        'email_institucional',
         'rut',
+        'dv',
         'es_nuevo',
         'curso_id',
         'apoderado_id',
-        'prioridad'
+        'prioridad',
+        'email_institucional',
+        'telefono',
+        'direccion'
     ];
 
     /**
