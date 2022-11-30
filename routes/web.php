@@ -21,18 +21,20 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/estudiante/nuevo', [App\Http\Controllers\EstudianteController::class, 'showCrear'])->name('nuevoEstudiante');
-Route::post('/estudiante/crear', [App\Http\Controllers\EstudianteController::class, 'create'])->name('crearEstudiante');
-Route::post('/estudiante/update', [App\Http\Controllers\EstudianteController::class, 'update'])->name('updateEstudiante');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/estudiante/nuevo', [App\Http\Controllers\EstudianteController::class, 'showCrear'])->name('nuevoEstudiante');
+    Route::post('/estudiante/crear', [App\Http\Controllers\EstudianteController::class, 'create'])->name('crearEstudiante');
+    Route::post('/estudiante/update', [App\Http\Controllers\EstudianteController::class, 'update'])->name('updateEstudiante');
 
-Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
-Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
-Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
-Route::get('/estudiante/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
-Route::get('/estudiante/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagos');
-Route::prefix('registros')->group(function () {
-    Route::get('/subir', function () {
-        return view('Registros.Subir');
-    })->name('subidaMasiva');
-    Route::post('/subir',[EstudianteController::class,'storeMassive'])->name('subirReg');
+    Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
+    Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
+    Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
+    Route::get('/estudiante/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
+    Route::get('/estudiante/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagos');
+    Route::prefix('registros')->group(function () {
+        Route::get('/subir', function () {
+            return view('Registros.Subir');
+        })->name('subidaMasiva');
+        Route::post('/subir', [EstudianteController::class, 'storeMassive'])->name('subirReg');
+    });
 });
