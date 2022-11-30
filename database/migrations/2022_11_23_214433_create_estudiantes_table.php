@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('apellidos');
             $table->string('nombres');
             $table->string('rut')->unique()->nullable()->default(null);
+            $table->string('dv')->nullable()->default(null);
             $table->boolean('es_nuevo')->default(false);
             
             $table->enum('prioridad', array('Sin Beneficios', 'Prioritario', 'Nuevo Prioritario'))->default('Sin Beneficios');
