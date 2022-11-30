@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('es_nuevo')->default(false);
             
             $table->enum('prioridad', array('Sin Beneficios', 'Prioritario', 'Nuevo Prioritario'))->default('Sin Beneficios');
-            $table->string('email_institucional')->unique()->nullable();
+            $table->string('email_institucional')->nullable();
             $table->string('telefono')->default('')->nullable();
             $table->string('direccion')->default('')->nullable();
 

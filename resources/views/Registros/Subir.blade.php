@@ -16,7 +16,18 @@
             <div class="row p-2 pt-5">
                <div class="col">
                   <div class="mb-3">
-                     <label for="subirArchivo" class="form-label">Subir archivo de Registros</label>
+                     <label for="subirArchivo" class="form-label">Tipo de Registro que se subira</label>
+                     <select class="form-select" name="tipoRegistro" id="tipoRegistro">
+                        <option value="prioritarios">Lista de Alumnos Prioritarios (XLSX)</option>
+                        <option value="nomina">Lista de Alumnos (XML)</option>
+                     </select>
+                  </div>
+               </div>
+            </div>
+            <div class="row p-2 pt-5">
+               <div class="col">
+                  <div class="mb-3">
+                     <label for="subirArchivo" class="form-label">Archivo de Registros</label>
                      <input class="form-control" type="file" id="subirArchivo" name="file">
                   </div>
                </div>
@@ -24,7 +35,7 @@
             <div class="row">
                <div class="col">
                   <div>
-                     <button class="btn btn-primary" type="submit" name="submit">Submit</button></form>
+                     <button class="btn btn-primary" type="submit" name="submit">Enviar</button></form>
                   </div>
                </div>
             </div>

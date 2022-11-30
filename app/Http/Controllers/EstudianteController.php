@@ -46,29 +46,42 @@ class EstudianteController extends Controller
         try {
            
             $request->validate([
-                "file.*"=> "mimes:xml",
+                "tipoRegistro"=>"required",
                 "file"=>"required"
             ]);
-            
-            $file = $request->file('file');
-            $a = Storage::disk('local')->put('docs',$file);
-            $process = new Process([
-                'python',
-                storage_path('app\xml\dataConverter.py'),
-                storage_path('app/'.$a)
-            ]);
-            $process->run();
 
-            // executes after the command finishes
-            foreach ($process as $type => $data) {
-                if ($process::OUT === $type) {
-                    dd($data);
-                } else { // $process::ERR === $type
-                    dd($data);
+            if($request->tipoRegistro == "nomina"){
+
+                $request->validate(["file"=> "mimes:xml"]);
+                $file = $request->file('file');
+                $a = Storage::disk('local')->put('docs',$file);
+                $process = new Process([
+                    'python',
+                    storage_path('app\xml\dataConverter.py'),
+                    storage_path('app/'.$a)
+                ]);
+                $process->run();
+
+                // executes after the command finishes
+                foreach ($process as $type => $data) {
+                    if ($process::OUT === $type) {
+                        dd($data);
+                    } else { // $process::ERR === $type
+                        dd($data);
+                    }
                 }
+                return redirect()->back();
+            }
+            elseif($request->tipoRegistro == "prioritarios"){
+                $request->validate(["file"=> "mimes:xlsx"]);
+            }
+            else{
+                return redirect()->back()->with("error","Error con el Registro");
             }
             
-            return redirect()->back();
+
+            
+            
         } catch (\Throwable $th) {
             throw $th;
         }
