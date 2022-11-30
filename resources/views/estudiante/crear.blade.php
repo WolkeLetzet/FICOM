@@ -71,7 +71,7 @@
                 </div>
                 <div class="form-group mb-3 col-md-6 col-12">
                     <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="text" id="email" name="email" value="{{$estudiante['email']}}" class="form-control">
+                    <input type="email" id="email" name="email" value="{{$estudiante['email']}}" class="form-control">
                 </div>
                 <div class="form-group mb-3 col-md-6 col-12">
                     <label for="direccion" class="form-label">Dirección</label>
@@ -138,7 +138,7 @@
             </div>
             <div class="form-group mb-3 col-md-5 col-12">
                 <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="text" id="email" name="email" class="form-control">
+                <input type="email" id="email" name="email" class="form-control">
             </div>
             <div class="form-group mb-3 col-md-7 col-12">
                 <label for="direccion" class="form-label">Dirección</label>
