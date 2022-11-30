@@ -6,22 +6,32 @@ import sys
 
 def formatter(data):
    alumnos =[];
+   codigo = data['mineduc']['nomina_establecimieno']['tipo_ensenanza']['@codigo']
    for curso in data['mineduc']['nomina_establecimieno']['tipo_ensenanza']['curso']:
       grado= curso['@grado']
+      if codigo == "310": grado+= "M"
+      if codigo == "10": 
+         if grado == "4": grado="PK"
+         elif grado== "5": grado = "K"
+         
       letra = curso['@letra']
       for alumno in curso['alumno']:
-         if alumno["@email"].strip()=="" : alumno["@email"]=None
+         if alumno["@email"] is not None:
+            if alumno["@email"].strip()=="" : alumno["@email"]=None
+            
+          
          alumnos.append({
                "grado":grado,
                "letra":letra,
-               "run": alumno["@run"],
-               "dv":alumno["@digito_ve"],
+               "run": alumno["@run"]+alumno["@digito_ve"],
                "apellidos":alumno['@ape_paterno']+" "+ alumno['@ape_materno'],
                "nombres":alumno['@nombres'],
                "direccion":alumno["@direccion"],
                "telefono":alumno["@telefono"],
                "email":alumno["@email"],
+               
             })
+          
          
    return alumnos;
 
