@@ -17,6 +17,9 @@ cursor= mydb.cursor()
 excel_data = pd.read_excel(sys.argv[1])
 
 data = pd.DataFrame(excel_data, columns=['RUN'])
+if data.empty:
+   raise Exception 
+
 datos = list(data.to_dict()['RUN'].values())
 
 for dato in datos:
