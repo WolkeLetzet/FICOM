@@ -19,8 +19,12 @@ return new class extends Migration
             $table->string('nombres');
             $table->string('rut')->unique()->nullable()->default(null);
             $table->boolean('es_nuevo')->default(false);
+            
             $table->enum('prioridad', array('Sin Beneficios', 'Prioritario', 'Nuevo Prioritario'))->default('Sin Beneficios');
             $table->string('email_institucional')->unique()->nullable();
+            $table->string('telefono')->default('')->nullable();
+            $table->string('direccion')->default('')->nullable();
+
             $table->bigInteger('curso_id')->unsigned()->nullable();
             $table->bigInteger('apoderado_id')->unsigned()->nullable();
             $table->foreign('curso_id')->references('id')->on('cursos');
