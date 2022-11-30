@@ -135,7 +135,8 @@ class EstudianteController extends Controller
     {
         try {
             Rut::parse($req->run)->validate();
-            $rut= Rut::parse('123456785')->format(Rut::FORMAT_ESCAPED)->toArray();
+            $rut= Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
+            $rut= Rut::parse($rut)->toArray();
             if($req->apellidos || $req->names || $req->telefono || $req->email || $req->direccion) {
                $apoderado = new Apoderado();
                $apoderado->apellidos = $req->apellidos;
