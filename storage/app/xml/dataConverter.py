@@ -77,9 +77,10 @@ def dataCharge(data:list[dict]):
 
 load_dotenv()
 xml_path = sys.argv[1]
-with open(xml_path,'r',encoding="utf-8-sig",errors='replace') as fp:
+with open(xml_path,'r',encoding="iso-8859-1",errors='replace') as fp:
    xml = fp.read()
    dictionary = xmltodict.parse(xml)
+   
    fp.close()
 dataCharge(formatter(dictionary))
 
