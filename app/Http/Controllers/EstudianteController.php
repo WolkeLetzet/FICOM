@@ -26,7 +26,7 @@ class EstudianteController extends Controller
         $curso = request('curso','todos');
     
         if ($curso != 'todos') {
-            return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->where('curso_id',$curso)->paginate($perPage))->with('perPage',$perPage);
+            return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->where('curso_id',$curso)->paginate($perPage))->with('perPage',$perPage)->with("cursos",Curso::all());
         }
         if( $req->search){
             return view('estudiante.listar')
@@ -34,9 +34,10 @@ class EstudianteController extends Controller
                     Estudiante::with(['curso','apoderado'])
                     ->searchByName($req->search)->searchBySurname($req->search)->paginate($perPage)
                 )
-            ->with('perPage',$perPage);
+            ->with('perPage',$perPage)
+            ->with("cursos",Curso::all());
         }
-        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->paginate($perPage))->with('perPage',$perPage);
+        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->paginate($perPage))->with('perPage',$perPage)->with("cursos",Curso::all());
     }
 
     /**

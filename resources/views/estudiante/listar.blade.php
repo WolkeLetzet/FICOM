@@ -16,7 +16,10 @@
             <div>
               <select class="form-select" name="curso" id="curso-select">
                 <option selected value="todos">Todos</option>
-                <option value="21">Curso 21</option>
+                @foreach ($cursos as $curso )
+                  <option value="{{$curso->id}}">{{$curso->curso."-".$curso->paralelo}}</option>
+                @endforeach
+                
               </select>
             </div>
             <div>
