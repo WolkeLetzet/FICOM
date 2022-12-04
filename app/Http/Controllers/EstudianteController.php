@@ -20,10 +20,23 @@ class EstudianteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->get())
-        ->with('apoderados', Apoderado::all());
+    public function index(Request $req)
+    {   
+        $perPage = request('perPage',10); 
+        $curso = request('curso','todos');
+    
+        if ($curso != 'todos') {
+            return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->where('curso_id',$curso)->paginate($perPage))->with('perPage',$perPage);
+        }
+        if( $req->search){
+            return view('estudiante.listar')
+            ->with('estudiantes',
+                    Estudiante::with(['curso','apoderado'])
+                    ->searchByName($req->search)->searchBySurname($req->search)->paginate($perPage)
+                )
+            ->with('perPage',$perPage);
+        }
+        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->paginate($perPage))->with('perPage',$perPage);
     }
 
     /**
