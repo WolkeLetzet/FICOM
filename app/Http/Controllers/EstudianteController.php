@@ -24,20 +24,56 @@ class EstudianteController extends Controller
     {   
         $perPage = request('perPage',10); 
         $curso = request('curso','todos');
-    
+
+
+        //Busqueda y firtrado por Temas
         if ($curso != 'todos') {
-            return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->where('curso_id',$curso)->paginate($perPage))->with('perPage',$perPage)->with("cursos",Curso::all());
-        }
-        if( $req->search){
+
+            if( $req->search){
+
+                $estudiantes=Estudiante::
+                        with('curso')
+                        ->searchByName($req->search)
+                        ->searchBySurname($req->search);
+                $estudiantes = $estudiantes->paginate(10);
+                dd($estudiantes);
+                return view('estudiante.listar')
+                ->with('estudiantes',$estudiantes->paginate($perPage))
+                ->with('perPage',$perPage)
+                ->with("cursos",Curso::all());
+            }
+
             return view('estudiante.listar')
-            ->with('estudiantes',
-                    Estudiante::with(['curso','apoderado'])
-                    ->searchByName($req->search)->searchBySurname($req->search)->paginate($perPage)
+            ->with('estudiantes',Estudiante::
+                    with(['curso'])
+                    ->where('curso_id',$curso)
+                    ->paginate($perPage)
                 )
             ->with('perPage',$perPage)
             ->with("cursos",Curso::all());
         }
-        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->paginate($perPage))->with('perPage',$perPage)->with("cursos",Curso::all());
+
+        //Solo Busqueda
+        if( $req->search){
+            return view('estudiante.listar')
+            ->with('estudiantes',Estudiante::
+                    with(['curso'])
+                    ->searchByName($req->search)
+                    ->searchBySurname($req->search)
+                    ->paginate($perPage)
+                )
+            ->with('perPage',$perPage)
+            ->with("cursos",Curso::all());
+        }
+
+        //Sin Busqueda ni Filtrado por Curso
+        return view('estudiante.listar')
+        ->with('estudiantes',Estudiante::
+            with(['curso'])
+            ->paginate($perPage)
+        )    
+        ->with('perPage',$perPage)
+        ->with("cursos",Curso::all());
     }
 
     /**

@@ -8,9 +8,9 @@
           <form class="d-flex navbar-nav ms-auto">
             <div>
               <select class="form-select" name="perPage" id="curso-select">
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
+                <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                <option value="15" @if ($perPage== 15) selected @endif>15</option>
+                <option value="20" @if ($perPage == 20) selected @endif>20</option>
               </select>
             </div>
             <div>
