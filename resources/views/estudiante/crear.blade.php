@@ -20,7 +20,7 @@
     @endphp
         
     <div class="container" id="form-container">
-        <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="col-md-10 mt-3 row">
+        <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="col-md-10 mt-3 row card">
             @csrf
             <h1 id="form-title">Estudiante</h1>
             <div class="form-group mb-3 col-md-3 col-6">
@@ -84,7 +84,7 @@
         </form>
     </div>
 @else
-<div class="container" id="form-container">
+<div class="container card" id="form-container">
     <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="mt-3 row">
         @csrf
         <h1 id="form-title">Estudiante</h1>
@@ -154,12 +154,6 @@
 @endif
 
 <style lang="scss">
-    div.container#form-container{
-        -webkit-box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
-        box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.75);
-        padding: .5rem 1.5rem;
-    }
     button{
         margin: 2rem 0 2rem 0 ;
     }
