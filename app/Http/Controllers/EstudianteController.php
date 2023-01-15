@@ -22,58 +22,51 @@ class EstudianteController extends Controller
      */
     public function index(Request $req)
     {   
-        $perPage = request('perPage',10); 
-        $curso = request('curso','todos');
-
+        $perPage = request('perPage', 10); 
+        $curso = request('curso', 'todos');
 
         //Busqueda y firtrado por Temas
         if ($curso != 'todos') {
+            if($req->search){
+                $estudiantes=Estudiante::with('curso')
+                    ->searchByName($req->search)
+                    ->searchBySurname($req->search)
+                    ->searchByRut($req->search)
+                    ->paginate($perPage);
 
-            if( $req->search){
-
-                $estudiantes=Estudiante::
-                        with('curso')
-                        ->searchByName($req->search)
-                        ->searchBySurname($req->search);
-                $estudiantes = $estudiantes->paginate(10);
-                dd($estudiantes);
                 return view('estudiante.listar')
-                ->with('estudiantes',$estudiantes->paginate($perPage))
-                ->with('perPage',$perPage)
-                ->with("cursos",Curso::all());
+                ->with('estudiantes', $estudiantes)
+                ->with('perPage', $perPage)
+                ->with("cursos", Curso::all());
             }
 
             return view('estudiante.listar')
-            ->with('estudiantes',Estudiante::
-                    with(['curso'])
-                    ->where('curso_id',$curso)
+            ->with('estudiantes', Estudiante::with(['curso'])
+                    ->where('curso_id', $curso)
                     ->paginate($perPage)
                 )
-            ->with('perPage',$perPage)
-            ->with("cursos",Curso::all());
+            ->with('perPage', $perPage)
+            ->with("cursos", Curso::all());
         }
 
         //Solo Busqueda
-        if( $req->search){
+        if($req->search){
             return view('estudiante.listar')
-            ->with('estudiantes',Estudiante::
-                    with(['curso'])
+            ->with('estudiantes', Estudiante::with(['curso'])
                     ->searchByName($req->search)
                     ->searchBySurname($req->search)
+                    ->searchByRut($req->search)
                     ->paginate($perPage)
                 )
-            ->with('perPage',$perPage)
-            ->with("cursos",Curso::all());
+            ->with('perPage', $perPage)
+            ->with("cursos", Curso::all());
         }
 
         //Sin Busqueda ni Filtrado por Curso
         return view('estudiante.listar')
-        ->with('estudiantes',Estudiante::
-            with(['curso'])
-            ->paginate($perPage)
-        )    
-        ->with('perPage',$perPage)
-        ->with("cursos",Curso::all());
+        ->with('estudiantes', Estudiante::with(['curso'])->paginate($perPage))    
+        ->with('perPage', $perPage)
+        ->with("cursos", Curso::all());
     }
 
     /**
@@ -185,9 +178,9 @@ class EstudianteController extends Controller
     {
         try {
             Rut::parse($req->run)->validate();
-            $rut= Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
-            $rut= Rut::parse($rut)->toArray();
-            if($req->apellidos || $req->names || $req->telefono || $req->email || $req->direccion) {
+            $rut = Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
+            $rut = Rut::parse($rut)->toArray();
+            if($req->apellidos != '' || $req->names != '' || $req->telefono != '' || $req->email != '' || $req->direccion != '') {
                $apoderado = new Apoderado();
                $apoderado->apellidos = $req->apellidos;
                $apoderado->nombres = $req->names;
@@ -207,6 +200,7 @@ class EstudianteController extends Controller
             $estudiante->telefono = $req->telefono;
             $estudiante->curso_id = $req->nivel;
             $estudiante->prioridad = $req->prioridad;
+            if(isset($apoderado)) $estudiante->apoderado_id = $apoderado->id;
             $estudiante->save();
             
 
@@ -269,9 +263,44 @@ class EstudianteController extends Controller
      * @param  \App\Models\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        //
+        $estudiante = Estudiante::find($id);
+        Rut::parse($request->run)->validate();
+        $rut = Rut::parse($request->run)->format(Rut::FORMAT_ESCAPED);
+        $rut = Rut::parse($rut)->toArray();
+        $estudiante->apellidos = $request->apellidos;
+        $estudiante->nombres = $request->nombres;
+        $estudiante->rut = $rut[0];
+        $estudiante->dv = $rut[1];
+        $estudiante->email_institucional = $request->email_institucional;
+        $estudiante->prioridad = $request->prioridad;
+        $estudiante->curso_id = $request->nivel;
+        $estudiante->telefono = $request->telefono;
+        $estudiante->direccion = $request->direccion;
+        
+        $apoderado = $estudiante->apoderado();
+        if(!$apoderado) {
+            $apoderado = new Apoderado();
+            $apoderado->apellidos = $request->lastnames;
+            $apoderado->nombres = $request->names;
+            $apoderado->telefono = $request->telefono;
+            $apoderado->email = $request->email;
+            $apoderado->direccion = $request->direccion;
+            $apoderado->save();
+            $estudiante->apoderado_id = $apoderado->id;
+        } else {
+            $apoderado->update([
+               'apellidos' => $request->lastnames,
+               'nombres' => $request->names,
+               'telefono' => $request->telefono,
+               'email' => $request->email,
+               'direccion' => $request->direccion, 
+            ]);
+        }
+
+        $estudiante->save();
+        return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante actualizado con exito!']);
     }
 
     /**

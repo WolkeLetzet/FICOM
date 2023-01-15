@@ -15,7 +15,7 @@
     @endif
 @endif
 <div class="container">
-    <form method="POST" action="{{route('updateEstudiante', ['id' => $estudiante->id, 'apoderado' => $estudiante->apoderado_id])}}" class="col-md-10 mt-3 row">
+    <form method="POST" action="{{route('updateEstudiante', $estudiante->id)}}" class="mt-3 row">
         @csrf
         <h1>Estudiante</h1>
         <div class="form-group mb-3 col-md-4 col-6">
@@ -28,7 +28,7 @@
         </div>
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="run" class="form-label">RUN</label>
-            <input type="text" name="run" id="run" class="form-control" value="{{$estudiante->rut}}" disabled>
+            <input type="text" name="run" id="run" class="form-control" value="{{$estudiante->rut . '-' . $estudiante->dv}}" disabled>
         </div>
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="email_institucional" class="form-label">Correo Institucional</label>
@@ -45,9 +45,9 @@
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="prioridad" class="form-label">Prioridad</label>
             <select name="prioridad" id="prioridad" class="form-control"  disabled>
-                <option value="1" @if($estudiante->prioridad == 1) selected @endif>No proritario</option>
-                <option value="2" @if($estudiante->prioridad == 2) selected @endif>Nuevo proritario</option>
-                <option value="3" @if($estudiante->prioridad == 3) selected @endif>Proritario</option>
+                <option value="Sin Beneficios" @if($estudiante->prioridad == "Sin Beneficios") selected @endif>No proritario</option>
+                <option value="Nuevo Prioritario" @if($estudiante->prioridad == "Nuevo Prioritario") selected @endif>Nuevo proritario</option>
+                <option value="Prioritario" @if($estudiante->prioridad == "Prioritario") selected @endif>Proritario</option>
             </select>
         </div>
         <h1>Apoderado</h1>

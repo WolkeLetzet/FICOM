@@ -53,13 +53,17 @@ class Estudiante extends Model
     {
         return $this->hasMany(Pago::class);
     }
-    public function scopeSearchByName($query,$text)
+    public function scopeSearchByName($query, $text)
     {
-        if($text) $query->orWhere('nombres','LIKE',"%$text%");
+        if($text) $query->orWhere('nombres', 'LIKE', "%$text%");
     }
 
-    public function scopeSearchBySurname($query,$text)
+    public function scopeSearchBySurname($query, $text)
     {
-        if($text) $query->orWhere('apellidos','LIKE',"%$text%");
+        if($text) $query->orWhere('apellidos', 'LIKE', "%$text%");
+    }
+
+    public function scopeSearchByRut($query, $text) {
+        if($text) $query->orWhere('rut', 'LIKE', "%$text%");
     }
 }

@@ -19,8 +19,8 @@
         $estudiante = $res['estudiante'];
     @endphp
         
-    <div class="container" id="form-container">
-        <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="col-md-10 mt-3 row card">
+    <div class="container card" id="form-container">
+        <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="mt-3 row">
             @csrf
             <h1 id="form-title">Estudiante</h1>
             <div class="form-group mb-3 col-md-3 col-6">

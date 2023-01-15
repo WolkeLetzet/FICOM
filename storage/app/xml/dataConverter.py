@@ -5,7 +5,7 @@ import mysql.connector
 import sys
 
 def formatter(data):
-   alumnos =[];
+   alumnos = []
    codigo = data['mineduc']['nomina_establecimieno']['tipo_ensenanza']['@codigo']
    for curso in data['mineduc']['nomina_establecimieno']['tipo_ensenanza']['curso']:
       grado= curso['@grado']
@@ -34,7 +34,7 @@ def formatter(data):
             })
           
          
-   return alumnos;
+   return alumnos
 
 def dataCharge(data:list[dict]):
    mydb = mysql.connector.connect(
