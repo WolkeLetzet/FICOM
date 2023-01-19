@@ -100,6 +100,10 @@
             <button type="submit" id="btn-enviar" class="btn btn-primary" hidden>Guardar</button>
         </div>
     </form>
+
+    <div class="buttons mt-3">
+        <a href="{{ route('pagosEstudiante', $estudiante->id) }}" class="btn btn-primary">Ver historial de pago</a>
+    </div>
 </div>
 <script>
     const btneditar = document.getElementById('btn-editar');

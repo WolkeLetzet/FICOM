@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('apellidos');
             $table->string('nombres');
+            $table->enum('genero', ['M', 'F', 'N'])->default('N');
             $table->string('rut')->unique()->nullable()->default(null);
             $table->string('dv')->nullable()->default(null);
             $table->boolean('es_nuevo')->default(false);

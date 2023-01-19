@@ -158,7 +158,9 @@ class EstudianteController extends Controller
     
     public function pagos($id)
     {
-        return view('estudiante.pagos');
+        $estudiante = Estudiante::find($id);
+        $estudiante['pagos'] = $estudiante->pagosPorAnio('2023')->get();
+        return view('estudiante.pagos')->with(['estudiante' => $estudiante]);
     }
 
     public function getEstudiantesNuevos() {

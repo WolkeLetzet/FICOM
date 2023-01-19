@@ -29,9 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
     Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
-    Route::get('/estudiante/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
-    Route::get('/estudiante/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
-    Route::get('/estudiante/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagos');
+    Route::get('/estudiantes/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
+    Route::get('/estudiantes/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagosEstudiante');
+    Route::get('/estudiantes/{id}/registrar-pago', [App\Http\Controllers\EstudianteController::class, 'registrarPago'])->name('registrarPago');
+    Route::get('/estudiantes/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
+
     Route::prefix('registros')->group(function () {
         Route::get('/subir', function () {
             return view('Registros.Subir');

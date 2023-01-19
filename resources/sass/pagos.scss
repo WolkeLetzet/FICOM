@@ -1,0 +1,13 @@
+.tabla-pagos {
+    th {
+        text-align: center;
+    }
+    th, td {
+        vertical-align: middle;
+    }
+
+    .multiples-pagos {
+        display: table-cell;
+        border: black;
+    }
+}

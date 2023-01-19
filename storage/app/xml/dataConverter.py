@@ -25,6 +25,7 @@ def formatter(data):
                "letra":letra,
                "run": alumno["@run"],
                "dv":alumno["@digito_ve"],
+               "genero": alumno["@genero"],
                "apellidos":alumno['@ape_paterno']+" "+ alumno['@ape_materno'],
                "nombres":alumno['@nombres'],
                "direccion":alumno["@direccion"],
@@ -54,19 +55,20 @@ def dataCharge(data:list[dict]):
          grado varchar(255) COLLATE 'utf8mb4_unicode_ci',
          letra varchar(255) COLLATE 'utf8mb4_unicode_ci',
          nombres varchar(255) COLLATE 'utf8mb4_unicode_ci',
+         genero varchar(255) COLLATE 'utf8mb4_unicode_ci',
          run varchar(255) COLLATE 'utf8mb4_unicode_ci',
          dv varchar(2) COLLATE 'utf8mb4_unicode_ci',
          telefono varchar(255) COLLATE 'utf8mb4_unicode_ci');"""
    )
    cursor.executemany("""
-      INSERT  INTO ficom.temp(apellidos, direccion,email,grado,letra,nombres,run,dv,telefono)
-      VALUES (%(apellidos)s, %(direccion)s,%(email)s,%(grado)s,%(letra)s,%(nombres)s,%(run)s,%(dv)s,%(telefono)s );""",
+      INSERT  INTO ficom.temp(apellidos, direccion,email,grado,letra,genero,nombres,run,dv,telefono)
+      VALUES (%(apellidos)s, %(direccion)s,%(email)s,%(grado)s,%(letra)s,%(genero)s,%(nombres)s,%(run)s,%(dv)s,%(telefono)s );""",
       data
    )
    mydb.commit() 
    cursor.execute(
-      """INSERT IGNORE  INTO ficom.estudiantes (apellidos,nombres,rut,dv,email_institucional ,telefono,direccion,curso_id)
-         SELECT tmp.apellidos, tmp.nombres, tmp.run,tmp.dv, tmp.email, tmp.telefono, tmp.direccion, crs.id AS curso
+      """INSERT IGNORE  INTO ficom.estudiantes (apellidos,nombres,genero,rut,dv,email_institucional ,telefono,direccion,curso_id)
+         SELECT tmp.apellidos, tmp.nombres, tmp.genero, tmp.run,tmp.dv, tmp.email, tmp.telefono, tmp.direccion, crs.id AS curso
          FROM ficom.temp AS tmp
          INNER JOIN ficom.cursos AS crs
          ON (crs.curso = tmp.grado ) AND (crs.paralelo = tmp.letra)"""

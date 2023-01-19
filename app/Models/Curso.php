@@ -22,6 +22,6 @@ class Curso extends Model
      */
     public function estudiantes(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Estudiante::class);
     }
 }

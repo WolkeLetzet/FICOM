@@ -15,6 +15,7 @@ class Estudiante extends Model
         'id',
         'nombres',
         'apellidos',
+        'genero',
         'rut',
         'dv',
         'es_nuevo',
@@ -53,6 +54,11 @@ class Estudiante extends Model
     {
         return $this->hasMany(Pago::class);
     }
+
+    public function pagosPorAnio($anio) {
+        return $this->pagos()->where('anio', '=', $anio);
+    }
+
     public function scopeSearchByName($query, $text)
     {
         if($text) $query->orWhere('nombres', 'LIKE', "%$text%");

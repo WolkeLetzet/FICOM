@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
-            $table->string('mes');
-            $table->string('documento');
+            $table->enum('mes', ['matricula', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']);
+            $table->string('anio');
+            $table->enum('documento', ['boleta', 'recibo']);
             $table->string('num_documento');
-            $table->string('fecha');
+            $table->string('fecha_pago');
             $table->string('valor');
-            $table->string('forma');
+            $table->enum('forma', ['efectivo', 'cheque', 'transferencia']);
             $table->text('observacion');
             $table->bigInteger('estudiante_id')->unsigned();
             $table->timestamps();
