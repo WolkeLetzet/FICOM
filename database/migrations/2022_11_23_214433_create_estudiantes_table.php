@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('dv')->nullable()->default(null);
             $table->boolean('es_nuevo')->default(false);
             
-            $table->enum('prioridad', array('Sin Beneficios', 'Prioritario', 'Nuevo Prioritario'))->default('Sin Beneficios');
+            $table->enum('prioridad', array('Alumno regular', 'Prioritario', 'Nuevo Prioritario'))->default('Alumno regular');
             $table->string('email_institucional')->nullable();
             $table->string('telefono')->default('')->nullable();
             $table->string('direccion')->default('')->nullable();

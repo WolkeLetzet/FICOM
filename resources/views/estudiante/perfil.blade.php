@@ -45,7 +45,7 @@
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="prioridad" class="form-label">Prioridad</label>
             <select name="prioridad" id="prioridad" class="form-control"  disabled>
-                <option value="Sin Beneficios" @if($estudiante->prioridad == "Sin Beneficios") selected @endif>No proritario</option>
+                <option value="Alumno regular" @if($estudiante->prioridad == "Alumno regular") selected @endif>No proritario</option>
                 <option value="Nuevo Prioritario" @if($estudiante->prioridad == "Nuevo Prioritario") selected @endif>Nuevo proritario</option>
                 <option value="Prioritario" @if($estudiante->prioridad == "Prioritario") selected @endif>Proritario</option>
             </select>

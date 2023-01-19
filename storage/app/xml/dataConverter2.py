@@ -16,11 +16,11 @@ cursor= mydb.cursor()
 
 excel_data = pd.read_excel(sys.argv[1])
 
-data = pd.DataFrame(excel_data, columns=['RUT'])
+data = pd.DataFrame(excel_data, columns=['RUN'])
 if data.empty:
    raise Exception 
 
-datos = list(data.to_dict()['RUT'].values())
+datos = list(data.to_dict()['RUN'].values())
 
 for dato in datos:
    cursor.execute(

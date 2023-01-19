@@ -278,9 +278,7 @@ class EstudianteController extends Controller
         $estudiante->curso_id = $request->nivel;
         $estudiante->telefono = $request->telefono;
         $estudiante->direccion = $request->direccion;
-        
-        $apoderado = $estudiante->apoderado();
-        if(!$apoderado) {
+        if(count($estudiante->apoderado()->get()) == 0) {
             $apoderado = new Apoderado();
             $apoderado->apellidos = $request->lastnames;
             $apoderado->nombres = $request->names;
@@ -290,7 +288,7 @@ class EstudianteController extends Controller
             $apoderado->save();
             $estudiante->apoderado_id = $apoderado->id;
         } else {
-            $apoderado->update([
+            $estudiante->apoderado()->update([
                'apellidos' => $request->lastnames,
                'nombres' => $request->names,
                'telefono' => $request->telefono,

@@ -37,7 +37,7 @@
                 @foreach ($estudiantes as $estud)
                     <tr 
                         @switch ($estud->prioridad)
-                            @case('Sin Beneficios')
+                            @case('Alumno regular')
                                 class="table-light"
                                 @break
                         

@@ -50,7 +50,7 @@
             <div class="form-group mb-3 col-md-4 col-6">
                 <label for="prioridad" class="form-label">Prioridad</label>
                 <select id="prioridad" name="prioridad" class="form-control form-select">
-                    <option value="Sin Beneficios" @if($estudiante['prioridad'] == 'Sin Beneficios') selected @endif>Sin Beneficios</option>
+                    <option value="Alumno regular" @if($estudiante['prioridad'] == 'Alumno regular') selected @endif>Alumno regular</option>
                     <option value="Nuevo Prioritario" @if($estudiante['prioridad'] == 'Nuevo Prioritario') selected @endif>Nuevo Prioritario</option>
                     <option value="Prioritario" @if($estudiante['prioridad'] == 'Prioritario') selected @endif>Proritario</option>
                 </select>
@@ -117,7 +117,7 @@
             <label for="prioridad" class="form-label">Prioridad</label>
             <select id="prioridad" name="prioridad" class="form-control form-select" required>
                 <option value="" selected disabled hidden>Selecciona una opción</option>
-                <option value="Sin Beneficios">Sin Beneficios</option>
+                <option value="Alumno regular">Alumno regular</option>
                 <option value="Nuevo Prioritario">Nuevo Prioritario</option>
                 <option value="Prioritario">Proritario</option>
             </select>
