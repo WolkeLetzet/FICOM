@@ -10,12 +10,13 @@ class Pago extends Model
 {
     use HasFactory;
 
+    protected $table = 'pagos';
     protected $fillable = [
         'id',
         'mes',
         'anio',
         'documento',
-        'num_documento',
+        // 'num_documento',
         'fecha_pago',
         'valor',
         'forma',

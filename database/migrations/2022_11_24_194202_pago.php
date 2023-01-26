@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('mes', ['matricula', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']);
             $table->string('anio');
             $table->enum('documento', ['boleta', 'recibo']);
-            $table->string('num_documento');
+            // $table->integerIncrements('num_documento'); puede ser la id así que dejaré la id por mientras
             $table->string('fecha_pago');
             $table->string('valor');
             $table->enum('forma', ['efectivo', 'cheque', 'transferencia']);

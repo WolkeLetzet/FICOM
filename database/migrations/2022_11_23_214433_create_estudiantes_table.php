@@ -28,9 +28,7 @@ return new class extends Migration
             $table->string('direccion')->default('')->nullable();
 
             $table->bigInteger('curso_id')->unsigned()->nullable();
-            $table->bigInteger('apoderado_id')->unsigned()->nullable();
             $table->foreign('curso_id')->references('id')->on('cursos');
-            $table->foreign('apoderado_id')->references('id')->on('apoderados')->nullOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

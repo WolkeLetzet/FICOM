@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Estudiante extends Model
 {
     use HasFactory;
 
+
+    protected $table= 'estudiantes';
+    
     protected $fillable = [
         'id',
         'nombres',
@@ -18,13 +23,14 @@ class Estudiante extends Model
         'genero',
         'rut',
         'dv',
-        'es_nuevo',
-        'curso_id',
-        'apoderado_id',
         'prioridad',
         'email_institucional',
         'telefono',
-        'direccion'
+        'direccion',
+        'es_nuevo',
+        'curso_id',
+        'apoderado_id',
+        'apoderado_suplente_id'
     ];
 
     /**
@@ -35,6 +41,19 @@ class Estudiante extends Model
     public function apoderado(): BelongsTo
     {
         return $this->belongsTo(Apoderado::class);
+    }
+
+    public function apoderados(): BelongsToMany
+    {
+        return $this->belongsToMany(Apoderado::class, 'apoderado_estudiante', 'apoderado_id', 'estudiante_id')->withPivot('es_suplente');
+    }
+
+    public function apoderadoTitular() {
+        return $this->apoderados()->wherePivot('es_suplente', false);
+    }
+
+    public function apoderadoSuplente() {
+        return $this->apoderados()->wherePivot('es_suplente', true);
     }
     /**
      * Get the curso that owns the Estudiante

@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
     Route::get('/estudiantes/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
     Route::get('/estudiantes/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagosEstudiante');
-    Route::get('/estudiantes/{id}/registrar-pago', [App\Http\Controllers\EstudianteController::class, 'registrarPago'])->name('registrarPago');
+    Route::post('/estudiantes/{id}/registrar-pago', [App\Http\Controllers\EstudianteController::class, 'registrarPago'])->name('registrarPago');
     Route::get('/estudiantes/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
 
     Route::prefix('registros')->group(function () {

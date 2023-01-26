@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apoderado;
+use App\Models\ApoderadoEstudiante;
 use App\Models\Curso;
 use App\Models\Estudiante;
+use App\Models\Pago;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -152,8 +154,12 @@ class EstudianteController extends Controller
      */
     public function show($id)
     {
-        $estudiante = Estudiante::where('id', $id)->with(['curso','apoderado'])->get();
-        return view('estudiante.perfil')->with('estudiante', $estudiante[0])->with('cursos',Curso::all());
+        $estudiante = Estudiante::find($id);
+        $estudiante->curso = $estudiante->curso;
+        $estudiante->apoderado_titular = $estudiante->apoderadoTitular()->first();
+        $estudiante->apoderado_suplente = $estudiante->apoderadoSuplente()->first();
+
+        return view('estudiante.perfil')->with('estudiante', $estudiante)->with('cursos', Curso::all());
     }
     
     public function pagos($id)
@@ -182,16 +188,9 @@ class EstudianteController extends Controller
             Rut::parse($req->run)->validate();
             $rut = Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
             $rut = Rut::parse($rut)->toArray();
-            if($req->apellidos != '' || $req->names != '' || $req->telefono != '' || $req->email != '' || $req->direccion != '') {
-               $apoderado = new Apoderado();
-               $apoderado->apellidos = $req->apellidos;
-               $apoderado->nombres = $req->names;
-               $apoderado->telefono = $req->telefono;
-               $apoderado->email = $req->email;
-               $apoderado->direccion = $req->direccion;
-               $apoderado->save();
-            }
 
+            
+            //Estudiante
             $estudiante = new Estudiante();
             $estudiante->nombres = $req->nombres;
             $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
@@ -202,48 +201,43 @@ class EstudianteController extends Controller
             $estudiante->telefono = $req->telefono;
             $estudiante->curso_id = $req->nivel;
             $estudiante->prioridad = $req->prioridad;
-            if(isset($apoderado)) $estudiante->apoderado_id = $apoderado->id;
             $estudiante->save();
             
+            //Apoderado
+            if($req->apellidos != '' || $req->names != '' || $req->telefono != '' || $req->email != '' || $req->direccion != '') {
+               $apoderado = new Apoderado();
+               $apoderado->apellidos = $req->apellidos;
+               $apoderado->nombres = $req->names;
+               $apoderado->telefono = $req->telefono;
+               $apoderado->email = $req->email;
+               $apoderado->direccion = $req->direccion;
+               
+               $estudiante->apoderados()->save($apoderado);
+            }
+
+            //Apoderado suplente
+            if($req->sub_apellidos != '' || $req->sub_names != '' || $req->sub_telefono != '' || $req->sub_email != '' || $req->sub_direccion != '') {
+                $apoderado_sub = new Apoderado();
+                $apoderado_sub->apellidos = $req->sub_apellidos;
+                $apoderado_sub->nombres = $req->sub_names;
+                $apoderado_sub->telefono = $req->sub_telefono;
+                $apoderado_sub->email = $req->sub_email;
+                $apoderado_sub->direccion = $req->sub_direccion;
+                $estudiante->apoderados()->save($apoderado_sub, ['es_suplente' => true]);
+            }
 
             return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante creado con exito!']);
         }
         catch(InvalidFormatException $e){
             $message = "RUT Incorrecto";
-            $es = [
-                'nombres' => $req->nombres,
-                'apellido_paterno' => $req->apellido_paterno,
-                'apellido_materno' => $req->apellido_materno,
-                'run' => $req->run,
-                'nivel' => $req->nivel,
-                'prioridad' => $req->prioridad,
-                'names' => $req->names,
-                'apellidos' => $req->apellidos,
-                'telefono' => $req->telefono,
-                'email' => $req->email,
-                'direccion' => $req->direccion
-            ];
-            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $es]);
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $req->except('_token')]);
         }
         catch (Exception $e) {
             $message = 'Ha ocurrido un error';
-            if(str_contains($e->getMessage(), 'apoderado')) $message = 'Completa todos los datos del apoderado!';
+            if(str_contains($e->getMessage(), 'apoderado')) $message = $e->getMessage() ;
             if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';
-            $es = [
-                'nombres' => $req->nombres,
-                'apellido_paterno' => $req->apellido_paterno,
-                'apellido_materno' => $req->apellido_materno,
-                'run' => $req->run,
-                'nivel' => $req->nivel,
-                'prioridad' => $req->prioridad,
-                'names' => $req->names,
-                'apellidos' => $req->apellidos,
-                'telefono' => $req->telefono,
-                'email' => $req->email,
-                'direccion' => $req->direccion
-            ];
 
-            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $es]);
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $req->except('_token')]);
         }
     }
 
@@ -280,22 +274,40 @@ class EstudianteController extends Controller
         $estudiante->curso_id = $request->nivel;
         $estudiante->telefono = $request->telefono;
         $estudiante->direccion = $request->direccion;
-        if(count($estudiante->apoderado()->get()) == 0) {
+        
+        if(count($estudiante->apoderadoTitular()->get()) == 0) {
             $apoderado = new Apoderado();
             $apoderado->apellidos = $request->lastnames;
             $apoderado->nombres = $request->names;
             $apoderado->telefono = $request->telefono;
             $apoderado->email = $request->email;
             $apoderado->direccion = $request->direccion;
-            $apoderado->save();
-            $estudiante->apoderado_id = $apoderado->id;
+            $estudiante->apoderados()->save($apoderado);
         } else {
-            $estudiante->apoderado()->update([
+            $estudiante->apoderadoTitular()->update([
                'apellidos' => $request->lastnames,
                'nombres' => $request->names,
                'telefono' => $request->telefono,
                'email' => $request->email,
                'direccion' => $request->direccion, 
+            ]);
+        }
+
+        if(count($estudiante->apoderadoSuplente()->get()) == 0) {
+            $apoderado = new Apoderado();
+            $apoderado->apellidos = $request->sub_lastnames;
+            $apoderado->nombres = $request->sub_names;
+            $apoderado->telefono = $request->sub_telefono;
+            $apoderado->email = $request->sub_email;
+            $apoderado->direccion = $request->sub_direccion;
+            $estudiante->apoderados()->save($apoderado, ['es_suplente' => true]);
+        } else {
+            $estudiante->apoderadoSuplente()->update([
+               'apellidos' => $request->sub_lastnames,
+               'nombres' => $request->sub_names,
+               'telefono' => $request->sub_telefono,
+               'email' => $request->sub_email,
+               'direccion' => $request->sub_direccion, 
             ]);
         }
 
@@ -312,5 +324,21 @@ class EstudianteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    /* Pagos ------------------------------------------- */
+    public function registrarPago($id, Request $request) {
+        try {
+            $array = $request->all();
+            $array['anio'] = date("y");
+            $array['estudiante_id'] = $id;
+            $pago = New Pago($array);
+            $pago->save();
+
+            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Pago registrado con éxito']);
+        } catch (Exception $e) {
+            return redirect()->back()->with('res', ['status' => 400, 'message' => 'Ha ocurrido un error', 'datos' => $request->except('_token')]);
+        }
     }
 }
