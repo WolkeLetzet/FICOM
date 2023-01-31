@@ -74,7 +74,21 @@ class Estudiante extends Model
     }
 
     public function pagosPorAnio($anio) {
-        return $this->pagos()->where('anio', '=', $anio);
+        $pagos_anio = $this->pagos()->where('anio', $anio)->oldest()->get();
+
+        return [
+            'matricula' => $pagos_anio->where('mes', 'matricula'),
+            'marzo' => $pagos_anio->where('mes', 'marzo'),
+            'abril' => $pagos_anio->where('mes', 'abril'),
+            'mayo' => $pagos_anio->where('mes', 'mayo'),
+            'junio' => $pagos_anio->where('mes', 'junio'),
+            'julio' => $pagos_anio->where('mes', 'julio'),
+            'agosto' => $pagos_anio->where('mes', 'agosto'),
+            'septiembre' => $pagos_anio->where('mes', 'septiembre'),
+            'octubre' => $pagos_anio->where('mes', 'octubre'),
+            'noviembre' => $pagos_anio->where('mes', 'noviembre'),
+            'diciembre' => $pagos_anio->where('mes', 'diciembre')
+        ];
     }
 
     public function scopeSearchByName($query, $text)

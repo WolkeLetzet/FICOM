@@ -4,6 +4,7 @@
     <form method="POST" action="{{route('registrarPago', $estudiante->id)}}" id="formPago" class="mt-3 row">
         @csrf
         <h2>Registrar pago</h2>
+        {{--
         <div class="form-group mb-3 col-4">
             <label for="monto_mensual" class="form-label">Monto mensualidad</label>
             <input type="text" name="monto_mensual" class="form-control">
@@ -20,7 +21,8 @@
                 <option value="">Sí</option>
             </select>
         </div>
-        <div class="form-group mb-3 col-4">
+        --}}
+        <div class="form-group mb-3 col-6 col-md-4">
             <label for="mes" class="form-label">Mes</label>
             <select name="mes" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
@@ -37,7 +39,7 @@
                 <option value="diciembre">Diciembre</option>
             </select>
         </div>
-        <div class="form-group mb-3 col-4">
+        <div class="form-group mb-3 col-6 col-md-4">
             <label for="anio" class="form-label">Año</label>
             <select name="anio" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
@@ -46,7 +48,7 @@
                 <option value="2024">2024</option>
             </select>
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-4">
             <label for="documento" class="form-label">Documento</label>
             <select name="documento" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
@@ -54,15 +56,15 @@
                 <option value="recibo">Recibo</option>
             </select>
         </div>
-        <div class="form-group mb-3 col-4">
+        <div class="form-group mb-3 col-6 col-md-4">
             <label for="fecha_pago" class="form-label">Fecha</label>
             <input type="date" name="fecha_pago" class="form-control">
         </div>
-        <div class="form-group mb-3 col-4">
+        <div class="form-group mb-3 col-6 col-md-4">
             <label for="valor" class="form-label">Valor</label>
             <input type="number" name="valor" class="form-control">
         </div>
-        <div class="form-group mb-3 col-4">
+        <div class="form-group mb-3 col-6 col-md-4">
             <label for="forma" class="form-label">Forma de pago</label>
             <select name="forma" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
@@ -84,7 +86,6 @@
 
 <div class="container mt-3">
     <div class="tabla-pagos-container">
-
         <table class="tabla-pagos table table-bordered border-dark">
             <thead>
               <tr>
@@ -100,127 +101,366 @@
             <tbody>
                 <tr>
                     <td>Matrícula</td>
-                    <td class="text-center text-uppercase">boleta</td>
-                    <td class="text-center">123</td>
-                    <td class="text-center">dd/mm/aaaa</td>
-                    <td class="text-center">$300,500</td>
-                    <td class="text-center text-capitalize">cheque</td>
-                    <td>
-                        N° cheque: 777777<br>
-                        Titular: Simoncito Bolivar<br>
-                        Banco: Santander
-                    </td>
+                    @if(count($estudiante->pagos_anio['matricula']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['matricula'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['matricula']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['matricula'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Marzo</td>
-                    <td class="multiples-pagos" colspan="6">
-                        <div class="detalles">
-                            <div class="text-uppercase" style="width: 123px">boleta</div>
-                            <div style="width: 150px">123</div>
-                            <div style="width: 120px">dd/mm/aaaa</div>
-                            <div style="width: 130px">$4000</div>
-                            <div class="text-capitalize" style="width: 150px">cheque</div>
-                            <div style="width: auto">texto texto texto</div>
-                        </div>
-                        <div class="detalles">
-                            <div class="text-uppercase" style="width: 123px">boleta</div>
-                            <div style="width: 150px">123</div>
-                            <div style="width: 120px">dd/mm/aaaa</div>
-                            <div style="width: 130px">$4000</div>
-                            <div class="text-capitalize" style="width: 150px">cheque</div>
-                            <div style="width: auto">texto texto texto</div>
-                        </div>
-                    </td>
+                    @if(count($estudiante->pagos_anio['marzo']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['marzo'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['marzo']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['marzo'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Abril</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['abril']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['abril'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['abril']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['abril'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Mayo</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['mayo']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['mayo'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['mayo']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['mayo'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Junio</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['junio']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['junio'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['junio']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['junio'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Julio</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['julio']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['julio'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['julio']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['julio'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Agosto</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['agosto']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['agosto'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['agosto']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['agosto'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Septiembre</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['septiembre']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['septiembre'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['septiembre']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['septiembre'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Octubre</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['octubre']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['octubre'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['octubre']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['octubre'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Noviembre</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['noviembre']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['noviembre'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['noviembre']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['noviembre'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
                 <tr>
                     <td>Diciembre</td>
-                    <td class="text-center text-uppercase"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center text-capitalize"></td>
-                    <td>
-                    </td>
+                    @if(count($estudiante->pagos_anio['diciembre']) > 1)
+                        <td class="multiples-pagos" colspan="6">
+                            @foreach($estudiante->pagos_anio['diciembre'] as $pago)
+                                <div class="detalles">
+                                    <div class="text-uppercase" style="width: 123px">{{ $pago['documento'] }}</div>
+                                    <div style="width: 150px">{{ $pago['id'] }}</div>
+                                    <div style="width: 120px">{{ $pago['fecha_pago'] }}</div>
+                                    <div style="width: 130px">{{ $pago['valor'] }}</div>
+                                    <div class="text-capitalize" style="width: 150px">{{ $pago['forma'] }}</div>
+                                    <div style="width: auto">{{ $pago['observacion'] }}</div>
+                                </div>
+                            @endforeach
+                        </td>
+                    @elseif(count($estudiante->pagos_anio['diciembre']) == 0)
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @else
+                        @foreach ($estudiante->pagos_anio['diciembre'] as $pago)    
+                            <td class="text-center text-uppercase">{{$pago['documento']}}</td>
+                            <td class="text-center">{{$pago['id']}}</td>
+                            <td class="text-center">{{$pago['fecha_pago']}}</td>
+                            <td class="text-center">{{$pago['valor']}}</td>
+                            <td class="text-center text-capitalize">{{$pago['forma']}}</td>
+                            <td>{{$pago['observacion']}}</td>
+                        @endforeach
+                    @endif
                 </tr>
             </tbody>
         </table>

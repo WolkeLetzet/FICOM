@@ -155,13 +155,6 @@ class EstudianteController extends Controller
 
         return view('estudiante.perfil')->with('estudiante', $estudiante)->with('cursos', Curso::all());
     }
-    
-    public function pagos($id)
-    {
-        $estudiante = Estudiante::find($id);
-        $estudiante['pagos'] = $estudiante->pagosPorAnio('2023')->get();
-        return view('estudiante.pagos')->with(['estudiante' => $estudiante]);
-    }
 
     public function getEstudiantesNuevos(Request $req) {
         $perPage = request('perpage', '10');
@@ -332,7 +325,6 @@ class EstudianteController extends Controller
     public function registrarPago($id, Request $request) {
         try {
             $array = $request->all();
-            $array['anio'] = date("y");
             $array['estudiante_id'] = $id;
             $pago = New Pago($array);
             $pago->save();
@@ -341,5 +333,12 @@ class EstudianteController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('res', ['status' => 400, 'message' => 'Ha ocurrido un error', 'datos' => $request->except('_token')]);
         }
+    }
+
+    public function pagos($id)
+    {
+        $estudiante = Estudiante::find($id);
+        $estudiante->pagos_anio = $estudiante->pagosPorAnio('2023');
+        return view('estudiante.pagos')->with(['estudiante' => $estudiante]);
     }
 }

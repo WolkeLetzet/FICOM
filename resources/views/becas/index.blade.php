@@ -18,9 +18,12 @@
                         <div class="descuento"><b>Descuento:</b> {{ $beca->descuento }}%</div>
                         <div class="descripcion"><b>Descripción:</b> {{ $beca->descripcion }}</div>
                     </div>
-                    
+
                     <div class="buttons mt-2">
                         <a href="{{route('showBeca', $beca->id)}}" class="btn btn-primary">Ver</a>
+                        @if(Auth::user()->hasAnyRole('admin', 'contabilidad'))
+                            <a href="{{route('editBeca', $beca->id)}}" class="btn btn-primary">Editar</a>
+                        @endif
                     </div>
                 </div>
             </div>
