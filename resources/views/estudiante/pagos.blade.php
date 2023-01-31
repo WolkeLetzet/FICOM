@@ -32,7 +32,7 @@
                 <option value="">Sí</option>
             </select>
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-4">
             <label for="mes" class="form-label">Mes</label>
             <select name="mes" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
@@ -47,6 +47,15 @@
                 <option value="octubre">Octubre</option>
                 <option value="noviembre">Noviembre</option>
                 <option value="diciembre">Diciembre</option>
+            </select>
+        </div>
+        <div class="form-group mb-3 col-4">
+            <label for="anio" class="form-label">Año</label>
+            <select name="anio" class="form-control form-select">
+                <option value="" selected disabled hidden>Selecciona una opción</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
             </select>
         </div>
         <div class="form-group mb-3 col-6">

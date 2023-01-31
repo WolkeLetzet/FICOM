@@ -20,7 +20,7 @@
                         <label for="subirArchivo" class="form-label">Tipo de Registro que se subira</label>
                         <select class="form-select" name="tipoRegistro" id="tipoRegistro">
                             <option value="prioritarios">Lista de Alumnos Prioritarios (XLSX)</option>
-                            <option value="nomina">Lista de Alumnos (XML)</option>
+                            <option value="nomina">Lista de Alumnos SIGE (XML)</option>
                         </select>
                     </div>
                 </div>

@@ -19,14 +19,34 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \App\Models\User::factory(10)->create();
+        
         $this->call(CursoSeeder::class);
-        $user= \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'contabilidad']);
+        Role::create(['name' => 'matriculas']);
+        
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Usuario admin',
+            'email' => 'admin@ficom.cl',
             'password' => Hash::make('password'),
         ]);
-        $role=Role::create(['name' => 'admin']);
         $user->assignRole('admin');
+        
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Usuario contabilidad',
+            'email' => 'contabilidad@ficom.cl',
+            'password' => Hash::make('password'),
+        ]);
+        $user->assignRole('contabilidad');
+        
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Usuario matriculas',
+            'email' => 'matriculas@ficom.cl',
+            'password' => Hash::make('password'),
+        ]);
+        $user->assignRole('matriculas');
+        
         // \App\Models\Apoderado::factory(7)->create();
         // \App\Models\Estudiante::factory(10)->create();
         
