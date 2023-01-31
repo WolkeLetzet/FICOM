@@ -113,7 +113,7 @@ class EstudianteController extends Controller
                 if (!$process->isSuccessful()) {
                     throw new ProcessFailedException($process);
                 }
-                return redirect()->back()->with('success','Registros subidos con Exito');
+                return redirect()->back()->with('res', ['status' => 200, 'message' => 'Registros subidos con éxito']);
             }
             elseif($request->tipoRegistro == "prioritarios"){
                 $request->validate(["file"=> "mimes:xlsx"]);
@@ -130,20 +130,14 @@ class EstudianteController extends Controller
                 if (!$process->isSuccessful()) {
                     throw new ProcessFailedException($process);
                 }
-                return redirect()->back()->with('success','Registros subidos con Exito');
-
+                return redirect()->back()->with('res', ['status' => 200, 'message' => 'Registros subidos con éxito']);
             }
             else{
-                return redirect()->back()->with("error","Error con el Registro");
+                return redirect()->back()->with('res', ['status' => 400, 'message' => 'Error al subir el registro']);
             }
-            
-
-            
-            
         } catch (\Throwable $th) {
             throw $th;
         }
-        
     }
 
     /**
@@ -169,9 +163,11 @@ class EstudianteController extends Controller
         return view('estudiante.pagos')->with(['estudiante' => $estudiante]);
     }
 
-    public function getEstudiantesNuevos() {
-        return view('estudiante.listar')->with('estudiantes', Estudiante::with(['curso','apoderado'])->where('es_nuevo', '1')->get())
-        ->with('apoderados', Apoderado::all());
+    public function getEstudiantesNuevos(Request $req) {
+        $perPage = request('perpage', '10');
+        $estudiantes = Estudiante::with('curso')->where('es_nuevo', '1')->latest()->paginate($perPage);
+        
+        return view('estudiante.listar')->with(['estudiantes' => $estudiantes, 'cursos' => Curso::all(), 'perPage' => $perPage]);
     }
 
     public function showCrear() {
@@ -261,58 +257,63 @@ class EstudianteController extends Controller
      */
     public function update($id, Request $request)
     {
-        $estudiante = Estudiante::find($id);
-        Rut::parse($request->run)->validate();
-        $rut = Rut::parse($request->run)->format(Rut::FORMAT_ESCAPED);
-        $rut = Rut::parse($rut)->toArray();
-        $estudiante->apellidos = $request->apellidos;
-        $estudiante->nombres = $request->nombres;
-        $estudiante->rut = $rut[0];
-        $estudiante->dv = $rut[1];
-        $estudiante->email_institucional = $request->email_institucional;
-        $estudiante->prioridad = $request->prioridad;
-        $estudiante->curso_id = $request->nivel;
-        $estudiante->telefono = $request->telefono;
-        $estudiante->direccion = $request->direccion;
-        
-        if(count($estudiante->apoderadoTitular()->get()) == 0) {
-            $apoderado = new Apoderado();
-            $apoderado->apellidos = $request->lastnames;
-            $apoderado->nombres = $request->names;
-            $apoderado->telefono = $request->telefono;
-            $apoderado->email = $request->email;
-            $apoderado->direccion = $request->direccion;
-            $estudiante->apoderados()->save($apoderado);
-        } else {
-            $estudiante->apoderadoTitular()->update([
-               'apellidos' => $request->lastnames,
-               'nombres' => $request->names,
-               'telefono' => $request->telefono,
-               'email' => $request->email,
-               'direccion' => $request->direccion, 
-            ]);
-        }
+        try {
 
-        if(count($estudiante->apoderadoSuplente()->get()) == 0) {
-            $apoderado = new Apoderado();
-            $apoderado->apellidos = $request->sub_lastnames;
-            $apoderado->nombres = $request->sub_names;
-            $apoderado->telefono = $request->sub_telefono;
-            $apoderado->email = $request->sub_email;
-            $apoderado->direccion = $request->sub_direccion;
-            $estudiante->apoderados()->save($apoderado, ['es_suplente' => true]);
-        } else {
-            $estudiante->apoderadoSuplente()->update([
-               'apellidos' => $request->sub_lastnames,
-               'nombres' => $request->sub_names,
-               'telefono' => $request->sub_telefono,
-               'email' => $request->sub_email,
-               'direccion' => $request->sub_direccion, 
-            ]);
+            $estudiante = Estudiante::find($id);
+            Rut::parse($request->run)->validate();
+            $rut = Rut::parse($request->run)->format(Rut::FORMAT_ESCAPED);
+            $rut = Rut::parse($rut)->toArray();
+            $estudiante->apellidos = $request->apellidos;
+            $estudiante->nombres = $request->nombres;
+            $estudiante->rut = $rut[0];
+            $estudiante->dv = $rut[1];
+            $estudiante->email_institucional = $request->email_institucional;
+            $estudiante->prioridad = $request->prioridad;
+            $estudiante->curso_id = $request->nivel;
+            $estudiante->telefono = $request->telefono;
+            $estudiante->direccion = $request->direccion;
+            
+            if(count($estudiante->apoderadoTitular()->get()) == 0) {
+                $apoderado = new Apoderado();
+                $apoderado->apellidos = $request->lastnames;
+                $apoderado->nombres = $request->names;
+                $apoderado->telefono = $request->telefono;
+                $apoderado->email = $request->email;
+                $apoderado->direccion = $request->direccion;
+                $estudiante->apoderados()->save($apoderado);
+            } else {
+                $estudiante->apoderadoTitular()->update([
+                   'apellidos' => $request->lastnames,
+                   'nombres' => $request->names,
+                   'telefono' => $request->telefono,
+                   'email' => $request->email,
+                   'direccion' => $request->direccion, 
+                ]);
+            }
+    
+            if(count($estudiante->apoderadoSuplente()->get()) == 0) {
+                $apoderado = new Apoderado();
+                $apoderado->apellidos = $request->sub_lastnames;
+                $apoderado->nombres = $request->sub_names;
+                $apoderado->telefono = $request->sub_telefono;
+                $apoderado->email = $request->sub_email;
+                $apoderado->direccion = $request->sub_direccion;
+                $estudiante->apoderados()->save($apoderado, ['es_suplente' => true]);
+            } else {
+                $estudiante->apoderadoSuplente()->update([
+                   'apellidos' => $request->sub_lastnames,
+                   'nombres' => $request->sub_names,
+                   'telefono' => $request->sub_telefono,
+                   'email' => $request->sub_email,
+                   'direccion' => $request->sub_direccion, 
+                ]);
+            }
+    
+            $estudiante->save();
+            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante actualizado con exito!']);
+        } catch (Exception $e) {
+            return redirect()->back()->with('res', ['status' => 400, 'message' => 'Error al actualizar el estudiante']);
         }
-
-        $estudiante->save();
-        return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante actualizado con exito!']);
     }
 
     /**

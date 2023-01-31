@@ -22,15 +22,11 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
-    Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
-    Route::get('/estudiantes/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
-
     Route::prefix('registros')->group(function () {
         Route::get('/subir', function () {
             return view('registros.subir');
         })->name('subidaMasiva');
-
+        
         Route::post('/subir', [EstudianteController::class, 'storeMassive'])->name('subirReg');
     });
 
@@ -45,4 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/estudiante/update/{id}', [App\Http\Controllers\EstudianteController::class, 'update'])->name('updateEstudiante');
         Route::get('/estudiantes/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
     });
+    
+    Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
+    Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
+    Route::get('/estudiantes/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
 });

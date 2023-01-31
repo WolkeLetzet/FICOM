@@ -1,19 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@php
-    if(session('res')) $res = session('res');
-@endphp
-@if (isset($res))
-    @if($res['status'] == 200)
-        <div class="alert alert-success">
-            {{ $res['message'] }}
-        </div>
-    @elseif($res['status'] == 400)
-        <div class="alert alert-danger">
-            {{ $res['message'] }}
-        </div>
-    @endif
-@endif
+
 @php
     if(isset($res) && $res['status'] == 400) $estudiante = $res['estudiante'];
 @endphp

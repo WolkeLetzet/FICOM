@@ -1,17 +1,5 @@
 @extends('layouts.app')
 @section('content')
-@php if(session('res')) $res = session('res'); @endphp
-@if (isset($res))
-    @if($res['status'] == 200)
-        <div class="alert alert-success">
-            {{ $res['message'] }}
-        </div>
-    @elseif($res['status'] == 400)
-        <div class="alert alert-danger">
-            {{ $res['message'] }}
-        </div>
-    @endif
-@endif
 <div class="container card">
     <form method="POST" action="{{route('registrarPago', $estudiante->id)}}" id="formPago" class="mt-3 row">
         @csrf
