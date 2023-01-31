@@ -2,6 +2,10 @@
 @section('content')
 
 <div class="container">
+    <div class="buttons mb-4">
+        <a href="{{ route('pagosEstudiante', $estudiante->id) }}" class="btn btn-primary">Ver historial de pago</a>
+    </div>
+
     <form method="POST" action="{{route('updateEstudiante', $estudiante->id)}}" class="mt-3 row">
         @csrf
         <h2>Estudiante</h2>
@@ -38,31 +42,31 @@
             </select>
         </div>
         <h2 class="mt-3">Apoderado</h2> 
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-6">
             <label for="names" class="form-label">Nombres</label>
             <input type="text" id="names" name="names" class="form-control" 
                 value="{{$estudiante->apoderado_titular ? $estudiante->apoderado_titular->nombres : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-6">
             <label for="lastnames" class="form-label">Apellidos</label>
             <input type="text" id="lastnames" name="lastnames" class="form-control" 
                 value="{{$estudiante->apoderado_titular ? $estudiante->apoderado_titular->apellidos : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-2">
             <label for="telefono" class="form-label">Teléfono</label>
             <input type="text" id="telefono" name="telefono" class="form-control" 
                 value="{{$estudiante->apoderado_titular ? $estudiante->apoderado_titular->telefono : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-5">
             <label for="email" class="form-label">Correo Electrónico</label>
             <input type="email" id="email" name="email" class="form-control" 
                 value="{{$estudiante->apoderado_titular ? $estudiante->apoderado_titular->email : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-5">
             <label for="direccion" class="form-label">Dirección</label>
             <input type="text" id="direccion" name="direccion" class="form-control" 
                 value="{{$estudiante->apoderado_titular ? $estudiante->apoderado_titular->direccion : ''}}" disabled
@@ -82,19 +86,19 @@
                 value="{{$estudiante->apoderado_suplente ? $estudiante->apoderado_suplente->apellidos : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-2">
             <label for="sub_telefono" class="form-label">Teléfono</label>
             <input type="text" id="sub_telefono" name="sub_telefono" class="form-control" 
                 value="{{$estudiante->apoderado_suplente ? $estudiante->apoderado_suplente->telefono : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-5">
             <label for="sub_email" class="form-label">Correo Electrónico</label>
             <input type="email" id="sub_email" name="sub_email" class="form-control" 
                 value="{{$estudiante->apoderado_suplente ? $estudiante->apoderado_suplente->email : ''}}" disabled
             >
         </div>
-        <div class="form-group mb-3 col-6">
+        <div class="form-group mb-3 col-6 col-md-5">
             <label for="sub_direccion" class="form-label">Dirección</label>
             <input type="text" id="sub_direccion" name="sub_direccion" class="form-control" 
                 value="{{$estudiante->apoderado_suplente ? $estudiante->apoderado_suplente->direccion : ''}}" disabled
@@ -107,10 +111,6 @@
             <button type="submit" id="btn-enviar" class="btn btn-primary" hidden>Guardar</button>
         </div>
     </form>
-
-    <div class="buttons mt-3">
-        <a href="{{ route('pagosEstudiante', $estudiante->id) }}" class="btn btn-primary">Ver historial de pago</a>
-    </div>
 </div>
 <script>
     const btneditar = document.getElementById('btn-editar');

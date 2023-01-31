@@ -5,10 +5,10 @@
     if(isset($res) && $res['status'] == 400) $estudiante = $res['estudiante'];
 @endphp
         
-<div class="container card" id="form-container">
+<div class="container card form-container">
     <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="mt-3 row">
         @csrf
-        <h2 id="form-title">Estudiante</h2>
+        <h2 class="form-title">Estudiante</h2>
         <div class="form-group mb-3 col-md-3 col-6">
             <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
             <input type="text" id="apellido_paterno" name="apellido_paterno" value="{{isset($estudiante) ? $estudiante['apellido_paterno'] : ''}}" class="form-control" autofocus>
@@ -102,14 +102,8 @@
             </div>
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary my-3">Guardar</button>
         </div>
     </form>
 </div>
-
-<style lang="scss">
-    button{
-        margin: 2rem 0 2rem 0 ;
-    }
-</style>
 @endsection

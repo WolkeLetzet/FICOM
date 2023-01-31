@@ -170,7 +170,7 @@ class EstudianteController extends Controller
         return view('estudiante.listar')->with(['estudiantes' => $estudiantes, 'cursos' => Curso::all(), 'perPage' => $perPage]);
     }
 
-    public function showCrear() {
+    public function showCreate() {
         return view('estudiante/crear')->with('cursos', Curso::all());
     }
     /**

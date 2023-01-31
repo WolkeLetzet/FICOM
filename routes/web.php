@@ -1,7 +1,9 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\BecaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,18 +33,23 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::group(['middleware' => ['check.role:admin|contabilidad']], function () {
-        Route::get('/estudiantes/{id}/pagos', [App\Http\Controllers\EstudianteController::class, 'pagos'])->name('pagosEstudiante');
-        Route::post('/estudiantes/{id}/registrar-pago', [App\Http\Controllers\EstudianteController::class, 'registrarPago'])->name('registrarPago');
-    });
-
-    Route::group(['middleware' => ['check.role:admin|matriculas']], function () {
-        Route::get('/estudiantes/nuevo', [App\Http\Controllers\EstudianteController::class, 'showCrear'])->name('nuevoEstudiante');
-        Route::post('/estudiantes/crear', [App\Http\Controllers\EstudianteController::class, 'create'])->name('crearEstudiante');
-        Route::post('/estudiante/update/{id}', [App\Http\Controllers\EstudianteController::class, 'update'])->name('updateEstudiante');
-        Route::get('/estudiantes/{id}/editar', [App\Http\Controllers\EstudianteController::class, 'edit'])->name('showEditar');
+        Route::get('/estudiantes/{id}/pagos', [EstudianteController::class, 'pagos'])->name('pagosEstudiante');
+        Route::post('/estudiantes/{id}/registrar-pago', [EstudianteController::class, 'registrarPago'])->name('registrarPago');
+        Route::get('/becas/nueva', [BecaController::class, 'showCreate'])->name('nuevaBeca');
+        Route::post('/becas/nueva', [BecaController::class, 'create'])->name('crearBeca');
+        Route::get('/becas/{id}/editar', [BecaController::class, 'showEdit'])->name('editBeca');
+        Route::post('/becas/{id}/editar', [BecaController::class, 'update'])->name('updateBeca');
     });
     
-    Route::get('/estudiantes', [App\Http\Controllers\EstudianteController::class, 'index'])->name('listarEstudiantes');
-    Route::get('/estudiantes/nuevos', [App\Http\Controllers\EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
-    Route::get('/estudiantes/{id}', [App\Http\Controllers\EstudianteController::class, 'show'])->name('showEstudiante');
+    Route::group(['middleware' => ['check.role:admin|matriculas']], function () {
+        Route::get('/estudiantes/nuevo', [EstudianteController::class, 'showCreate'])->name('nuevoEstudiante');
+        Route::post('/estudiantes/crear', [EstudianteController::class, 'create'])->name('crearEstudiante');
+        Route::post('/estudiante/update/{id}', [EstudianteController::class, 'update'])->name('updateEstudiante');
+    });
+    
+    Route::get('/becas', [BecaController::class, 'index'])->name('becas');
+    Route::get('/becas/{id}', [BecaController::class, 'show'])->name('showBeca');
+    Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('listarEstudiantes');
+    Route::get('/estudiantes/nuevos', [EstudianteController::class, 'getEstudiantesNuevos'])->name('listarEstudiantesNuevos');
+    Route::get('/estudiantes/{id}', [EstudianteController::class, 'show'])->name('showEstudiante');
 });
