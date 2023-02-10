@@ -5,7 +5,7 @@
         
         @if(Auth::user()->hasAnyRole('contabilidad', 'admin'))
             <div class="buttons">
-                <a href="{{ route('nuevaBeca') }}" class="btn btn-primary">Nueva beca</a>    
+                <a href="{{ route('beca.create') }}" class="btn btn-primary">Nueva beca</a>    
             </div>
         @endif
 
@@ -20,9 +20,9 @@
                     </div>
 
                     <div class="buttons mt-2">
-                        <a href="{{route('showBeca', $beca->id)}}" class="btn btn-primary">Ver</a>
+                        <a href="{{route('beca.show', $beca->id)}}" class="btn btn-primary">Ver</a>
                         @if(Auth::user()->hasAnyRole('admin', 'contabilidad'))
-                            <a href="{{route('editBeca', $beca->id)}}" class="btn btn-primary">Editar</a>
+                            <a href="{{route('beca.edit', $beca->id)}}" class="btn btn-primary">Editar</a>
                         @endif
                     </div>
                 </div>

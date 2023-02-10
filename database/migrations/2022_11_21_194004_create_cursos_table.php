@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('curso');
             $table->string('paralelo');
+            $table->integer('arancel');
             $table->timestamps();
         });
     }

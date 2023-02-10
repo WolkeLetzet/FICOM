@@ -48,18 +48,24 @@
                             @endif--}}
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('listarEstudiantes') }}">Listado de estudiantes</a>
+                                <a class="nav-link" href="{{ route('estudiante.index') }}">Listado de estudiantes</a>
                             </li>
                             @if(Auth::user()->hasAnyRole('admin', 'matriculas'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('nuevoEstudiante') }}">Estudiante nuevo</a>
+                                    <a class="nav-link" href="{{ route('estudiante.create') }}">Estudiante nuevo</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('subidaMasiva') }}">Subir registros</a>
                                 </li>
                             @endif
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('becas') }}">Becas</a>
+                            <li class="nav-item dropdown">
+                                <a id="finanzasDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Finanzas
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a href="{{ route('beca.index') }}" class="dropdown-item">Becas</a>
+                                    <a href="{{ route('curso.index') }}" class="dropdown-item">Cursos</a>
+                                </div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -112,6 +118,14 @@
 
             @yield('content')
         </main>
+        @stack('scripts')
+        <script>
+            //Activa los tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        </script>
     </div>
 </body>
 </html>

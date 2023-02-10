@@ -16,7 +16,7 @@ class Pago extends Model
         'mes',
         'anio',
         'documento',
-        // 'num_documento',
+        'num_documento',
         'fecha_pago',
         'valor',
         'forma',

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apoderado;
-use App\Models\ApoderadoEstudiante;
 use App\Models\Curso;
 use App\Models\Estudiante;
-use App\Models\Pago;
+use App\Models\Beca;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -77,9 +76,62 @@ class EstudianteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        
+        try {
+            Rut::parse($req->run)->validate();
+            $rut = Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
+            $rut = Rut::parse($rut)->toArray();
+            
+            //Estudiante
+            $estudiante = new Estudiante();
+            $estudiante->nombres = $req->nombres;
+            $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
+            $estudiante->rut = $rut[0];
+            $estudiante->dv = $rut[1];
+            $estudiante->es_nuevo = 1;
+            $estudiante->direccion = $req->direccion;
+            $estudiante->telefono = $req->telefono;
+            $estudiante->curso_id = $req->nivel;
+            $estudiante->prioridad = $req->prioridad;
+            $estudiante->save();
+            
+            //Apoderado
+            if($req->apellidos != '' || $req->names != '' || $req->telefono != '' || $req->email != '' || $req->direccion != '') {
+               $apoderado = new Apoderado();
+               $apoderado->apellidos = $req->apellidos;
+               $apoderado->nombres = $req->names;
+               $apoderado->telefono = $req->telefono;
+               $apoderado->email = $req->email;
+               $apoderado->direccion = $req->direccion;
+               
+               $estudiante->apoderados()->save($apoderado);
+            }
+
+            //Apoderado suplente
+            if($req->sub_apellidos != '' || $req->sub_names != '' || $req->sub_telefono != '' || $req->sub_email != '' || $req->sub_direccion != '') {
+                $apoderado_sub = new Apoderado();
+                $apoderado_sub->apellidos = $req->sub_apellidos;
+                $apoderado_sub->nombres = $req->sub_names;
+                $apoderado_sub->telefono = $req->sub_telefono;
+                $apoderado_sub->email = $req->sub_email;
+                $apoderado_sub->direccion = $req->sub_direccion;
+                $estudiante->apoderados()->save($apoderado_sub, ['es_suplente' => true]);
+            }
+
+            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante creado con exito!']);
+        }
+        catch(InvalidFormatException $e){
+            $message = "RUT Incorrecto";
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $req->except('_token')]);
+        }
+        catch (Exception $e) {
+            $message = 'Ha ocurrido un error';
+            if(str_contains($e->getMessage(), 'apoderado')) $message = $e->getMessage() ;
+            if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';
+
+            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $req->except('_token')]);
+        }
     }
 
     /**
@@ -148,12 +200,11 @@ class EstudianteController extends Controller
      */
     public function show($id)
     {
-        $estudiante = Estudiante::find($id);
-        $estudiante->curso = $estudiante->curso;
+        $estudiante = Estudiante::with('curso', 'beca')->find($id);
         $estudiante->apoderado_titular = $estudiante->apoderadoTitular()->first();
         $estudiante->apoderado_suplente = $estudiante->apoderadoSuplente()->first();
 
-        return view('estudiante.perfil')->with('estudiante', $estudiante)->with('cursos', Curso::all());
+        return view('estudiante.perfil', ['estudiante' => $estudiante, 'cursos' => Curso::all(), 'becas' => Beca::all()]);
     }
 
     public function getEstudiantesNuevos(Request $req) {
@@ -163,9 +214,6 @@ class EstudianteController extends Controller
         return view('estudiante.listar')->with(['estudiantes' => $estudiantes, 'cursos' => Curso::all(), 'perPage' => $perPage]);
     }
 
-    public function showCreate() {
-        return view('estudiante/crear')->with('cursos', Curso::all());
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -173,61 +221,7 @@ class EstudianteController extends Controller
      */
     public function create(Request $req)
     {
-        try {
-            Rut::parse($req->run)->validate();
-            $rut = Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
-            $rut = Rut::parse($rut)->toArray();
-
-            
-            //Estudiante
-            $estudiante = new Estudiante();
-            $estudiante->nombres = $req->nombres;
-            $estudiante->apellidos = $req->apellido_paterno . ' ' . $req->apellido_materno;
-            $estudiante->rut = $rut[0];
-            $estudiante->dv = $rut[1];
-            $estudiante->es_nuevo = 1;
-            $estudiante->direccion = $req->direccion;
-            $estudiante->telefono = $req->telefono;
-            $estudiante->curso_id = $req->nivel;
-            $estudiante->prioridad = $req->prioridad;
-            $estudiante->save();
-            
-            //Apoderado
-            if($req->apellidos != '' || $req->names != '' || $req->telefono != '' || $req->email != '' || $req->direccion != '') {
-               $apoderado = new Apoderado();
-               $apoderado->apellidos = $req->apellidos;
-               $apoderado->nombres = $req->names;
-               $apoderado->telefono = $req->telefono;
-               $apoderado->email = $req->email;
-               $apoderado->direccion = $req->direccion;
-               
-               $estudiante->apoderados()->save($apoderado);
-            }
-
-            //Apoderado suplente
-            if($req->sub_apellidos != '' || $req->sub_names != '' || $req->sub_telefono != '' || $req->sub_email != '' || $req->sub_direccion != '') {
-                $apoderado_sub = new Apoderado();
-                $apoderado_sub->apellidos = $req->sub_apellidos;
-                $apoderado_sub->nombres = $req->sub_names;
-                $apoderado_sub->telefono = $req->sub_telefono;
-                $apoderado_sub->email = $req->sub_email;
-                $apoderado_sub->direccion = $req->sub_direccion;
-                $estudiante->apoderados()->save($apoderado_sub, ['es_suplente' => true]);
-            }
-
-            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante creado con exito!']);
-        }
-        catch(InvalidFormatException $e){
-            $message = "RUT Incorrecto";
-            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $req->except('_token')]);
-        }
-        catch (Exception $e) {
-            $message = 'Ha ocurrido un error';
-            if(str_contains($e->getMessage(), 'apoderado')) $message = $e->getMessage() ;
-            if(str_contains($e->getMessage(), 'estudiantes_rut_unique')) $message = 'Este estudiante ya se encuentra registrado';
-
-            return redirect()->back()->with('res', ['status' => 400, 'message' => $message, 'estudiante' => $req->except('_token')]);
-        }
+        return view('estudiante/crear')->with('cursos', Curso::all());
     }
 
     /**
@@ -262,6 +256,7 @@ class EstudianteController extends Controller
             $estudiante->dv = $rut[1];
             $estudiante->email_institucional = $request->email_institucional;
             $estudiante->prioridad = $request->prioridad;
+            if($estudiante->prioridad == 'Prioritario') $estudiante->beca()->dissociate();
             $estudiante->curso_id = $request->nivel;
             $estudiante->telefono = $request->telefono;
             $estudiante->direccion = $request->direccion;
@@ -301,7 +296,7 @@ class EstudianteController extends Controller
                    'direccion' => $request->sub_direccion, 
                 ]);
             }
-    
+            
             $estudiante->save();
             return redirect()->back()->with('res', ['status' => 200, 'message' => 'Estudiante actualizado con exito!']);
         } catch (Exception $e) {
@@ -322,13 +317,9 @@ class EstudianteController extends Controller
 
 
     /* Pagos ------------------------------------------- */
-    public function registrarPago($id, Request $request) {
+    public function storePago($id, Request $request) {
         try {
-            $array = $request->all();
-            $array['estudiante_id'] = $id;
-            $pago = New Pago($array);
-            $pago->save();
-
+            Estudiante::find($id)->pagos()->create($request->all());
             return redirect()->back()->with('res', ['status' => 200, 'message' => 'Pago registrado con éxito']);
         } catch (Exception $e) {
             return redirect()->back()->with('res', ['status' => 400, 'message' => 'Ha ocurrido un error', 'datos' => $request->except('_token')]);
@@ -337,8 +328,27 @@ class EstudianteController extends Controller
 
     public function pagos($id)
     {
-        $estudiante = Estudiante::find($id);
+        $estudiante = Estudiante::with('curso', 'beca')->find($id);
         $estudiante->pagos_anio = $estudiante->pagosPorAnio('2023');
+        $estudiante->apoderado_titular = $estudiante->apoderadoTitular()->first();
+
         return view('estudiante.pagos')->with(['estudiante' => $estudiante]);
+    }
+
+    public function becaEdit($id) {
+        return view('estudiante.beca', ['estudiante' => Estudiante::with('beca', 'curso')->find($id), 'becas' => Beca::all()]);
+    }
+
+    public function becaUpdate($id, Request $req) {
+        try {
+            $estudiante = Estudiante::find($id);
+            if($estudiante->prioridad == 'Prioritario')
+                return redirect()->back()->with('res', ['status' => 400, 'message' => 'No se puede asignar becas a un estudiante prioritario']);
+            
+            $estudiante->beca()->associate($req->beca_id)->save();
+            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Beca asignada con éxito']);
+        } catch(Exception $e) {
+            return redirect()->back()->with('res', ['status' => 400, 'message' => 'Ha ocurrido un error', 'datos' => $req->except('_token')]);
+        }
     }
 }

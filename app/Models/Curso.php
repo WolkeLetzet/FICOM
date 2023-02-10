@@ -14,6 +14,7 @@ class Curso extends Model
         'id',
         'curso',
         'paralelo',
+        'arancel'
     ];
     /**
      * Get all of the estudiantes for the Curso

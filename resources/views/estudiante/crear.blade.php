@@ -6,7 +6,7 @@
 @endphp
         
 <div class="container card form-container">
-    <form method="post" action="{{ route('crearEstudiante') }}" id="crearEstudiante" class="mt-3 row">
+    <form method="post" action="{{ route('estudiante.store') }}" id="estudiante.store" class="mt-3 row">
         @csrf
         <h2 class="form-title">Estudiante</h2>
         <div class="form-group mb-3 col-md-3 col-6">

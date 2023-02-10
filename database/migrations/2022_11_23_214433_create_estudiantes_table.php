@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string('email_institucional')->nullable();
             $table->string('telefono')->default('')->nullable();
             $table->string('direccion')->default('')->nullable();
+            $table->foreignId('curso_id')->nullable()->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('beca_id')->nullable()->nullOnDelete()->cascadeOnUpdate();
 
-            $table->bigInteger('curso_id')->unsigned()->nullable();
-            $table->foreign('curso_id')->references('id')->on('cursos');
             $table->timestamps();
         });
     }

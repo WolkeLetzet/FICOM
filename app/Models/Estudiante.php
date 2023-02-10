@@ -28,6 +28,7 @@ class Estudiante extends Model
         'direccion',
         'es_nuevo',
         'curso_id',
+        'beca_id',
         'apoderado_id',
         'apoderado_suplente_id'
     ];
@@ -54,11 +55,17 @@ class Estudiante extends Model
     public function apoderadoSuplente() {
         return $this->apoderados()->wherePivot('es_suplente', true);
     }
+
     /**
      * Get the curso that owns the Estudiante
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    
+    public function beca(): BelongsTo {
+        return $this->belongsTo(Beca::class);
+    }
+
     public function curso(): BelongsTo
     {
         return $this->belongsTo(Curso::class);

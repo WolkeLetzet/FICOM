@@ -3,10 +3,11 @@
 
 <div class="container">
     <div class="buttons mb-4">
-        <a href="{{ route('pagosEstudiante', $estudiante->id) }}" class="btn btn-primary">Ver historial de pago</a>
+        <a href="{{ route('estudiante.pagos', $estudiante->id) }}" class="btn btn-primary">Ver historial de pago</a>
+        <a href="{{ route('estudiante.beca.edit', $estudiante->id) }}" class="btn btn-primary">Administrar beca</a>
     </div>
 
-    <form method="POST" action="{{route('updateEstudiante', $estudiante->id)}}" class="mt-3 row">
+    <form method="POST" action="{{route('estudiante.update', $estudiante->id)}}" class="mt-3 row">
         @csrf
         <h2>Estudiante</h2>
         <div class="form-group mb-3 col-md-4 col-6">
@@ -29,16 +30,16 @@
             <label for="nivel" class="form-label">Nivel</label>
             <select id="nivel" name="nivel" id="nivel" class="form-control form-select" disabled>
                 @foreach ($cursos as $curso)
-                    <option value="{{$curso->id}}" @if($estudiante->curso_id == $curso->id) selected @endif>{{$curso->curso . '-' . $curso->paralelo}}</option>
+                    <option value="{{$curso->id}}" @selected($estudiante->curso_id == $curso->id)>{{$curso->curso . '-' . $curso->paralelo}}</option>
                 @endforeach
             </select>
         </div>
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="prioridad" class="form-label">Prioridad</label>
             <select name="prioridad" id="prioridad" class="form-control form-select" disabled>
-                <option value="Alumno regular" @if($estudiante->prioridad == "Alumno regular") selected @endif>No proritario</option>
-                <option value="Nuevo Prioritario" @if($estudiante->prioridad == "Nuevo Prioritario") selected @endif>Nuevo proritario</option>
-                <option value="Prioritario" @if($estudiante->prioridad == "Prioritario") selected @endif>Proritario</option>
+                <option value="Alumno regular" @selected($estudiante->prioridad == "Alumno regular")>Alumno regular</option>
+                <option value="Nuevo Prioritario" @selected($estudiante->prioridad == "Nuevo Prioritario")>Nuevo proritario</option>
+                <option value="Prioritario" @selected($estudiante->prioridad == "Prioritario")>Proritario</option>
             </select>
         </div>
         <h2 class="mt-3">Apoderado</h2> 
