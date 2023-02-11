@@ -1,4 +1,4 @@
-.beca, .curso {
+.beca, .curso, .estudiante {
     justify-content: space-between;
     padding: 0.75rem;
     height: 100% !important;
@@ -15,6 +15,10 @@
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;  
         overflow: hidden;
+    }
+
+    .buttons.d-flex {
+        gap: .5rem;
     }
 }
 

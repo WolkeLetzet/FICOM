@@ -9,7 +9,7 @@
 
 <div class="container card">
     <div class="row">
-        <h2 class="mt-3">Información del estudiante</h2>
+        <h2>Información del estudiante</h2>
         <div class="form-group mb-3 col-4">
             <label for="monto_mensual" class="form-label">Estudiante</label>
             <p class="form-control">{{ $estudiante->nombres . ' ' . $estudiante->apellidos }}</p>
@@ -135,11 +135,11 @@
                     <td class="text-center">NIVEL</td>
                 </tr>
                 <tr>
-                    <td colspan="6">Nombre Apoderado: {{ $estudiante->apoderado_titular->nombres . ' ' . $estudiante->apoderado_titular->apellidos }}</td>
+                    <td colspan="6">Nombre Apoderado: {{ $estudiante->apoderado_titular ? $estudiante->apoderado_titular->nombres . ' ' . $estudiante->apoderado_titular->apellidos : '' }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3">Teléfono: {{ $estudiante->apoderado_titular->telefono }}</td>
-                    <td colspan="3">Correo Electrónico: {{ $estudiante->apoderado_titular->email }}</td>
+                    <td colspan="2">Teléfono: {{ $estudiante->apoderado_titular ? $estudiante->apoderado_titular->telefono : '' }}</td>
+                    <td colspan="4">Correo Electrónico: {{ $estudiante->apoderado_titular ? $estudiante->apoderado_titular->email : '' }}</td>
                 </tr>
             </tbody>
         </table>

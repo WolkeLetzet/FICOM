@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container">
+<div class="container card">
     <div class="row">
         <h2 class="mt-3">Información del estudiante</h2>
         <div class="form-group mb-3 col-4">

@@ -2,7 +2,7 @@
 @section('content')
 @php if(session('res') && session('res')['status'] == 400) $beca = session('res')['beca']; @endphp
 <div class="container card form-container">
-    <form method="post" action="{{ route('updateBeca', $beca['id']) }}" id="formBeca" class="mt-3 row">
+    <form method="post" action="{{ route('beca.update', $beca['id']) }}" id="formBeca" class="mt-3 row">
         @csrf
         <h2 class="form-title">Beca</h2>
         
