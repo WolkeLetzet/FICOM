@@ -25,4 +25,22 @@ class Curso extends Model
     {
         return $this->hasMany(Estudiante::class);
     }
+
+    public function actualizar($id, $req) {
+        try {
+            Curso::find($id)->update($req->all());
+            return ['status' => 200, 'message' => 'Curso actualizado con éxito']; 
+        } catch(Exception $e) {
+            return ['status' => 400, 'message' => 'No se pudo actualizar el curso', 'cursoErr' => $req->except('_token')];
+        }
+    }
+
+    public function eliminar($id) {
+        try {
+            Curso::find($id)->delete();
+            return ['status' => 200, 'message' => 'Curso eliminado con éxito']; 
+        } catch(Exception $e) {
+            return ['status' => 400, 'message' => 'No se pudo eliminar el curso'];
+        }
+    }
 }

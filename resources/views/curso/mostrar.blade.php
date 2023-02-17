@@ -26,8 +26,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Nombre</th>
                 <th scope="col">Apellidos</th>
+                <th scope="col">Nombre</th>
                 <th scope="col">RUN</th>
                 <th scope="col">Prioridad</th>
                 <th scope="col">Curso</th>
@@ -51,8 +51,8 @@
                             @break
                     @endswitch
                 >
-                    <td>{{ $estud->nombres }}</td>
                     <td>{{ $estud->apellidos }}</td>
+                    <td>{{ $estud->nombres }}</td>
                     <td>{{ $estud->rut . '-' . $estud->dv }}</td>
                     <td>{{ $estud->prioridad }}</td>
                     <td>

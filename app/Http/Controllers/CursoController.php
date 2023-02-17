@@ -8,13 +8,18 @@ use Exception;
 
 class CursoController extends Controller
 {
+    private $curso;
+    public function __construct(Curso $curso)
+    {
+        $this->curso = $curso;
+    }
+
     public function index() {
-        $cursos = Curso::all();
-        return view('curso.index', ['cursos' => $cursos]);
+        return view('curso.index', ['cursos' => $this->curso::all()]);
     }
 
     public function show($id) {
-        return view('curso.mostrar', ['curso' => Curso::with('estudiantes')->find($id)]);
+        return view('curso.mostrar', ['curso' => $this->curso::with('estudiantes')->find($id)]);
     }
 
     public function create() {
@@ -30,22 +35,13 @@ class CursoController extends Controller
     }
 
     public function update($id, Request $req) {
-        try {
-            Curso::find($id)->update($req->all());
-            return redirect()->back()->with('res', ['status' => 200, 'message' => 'Curso actualizado con éxito']); 
-        } catch(Exception $e) {
-            dd($e);
-            $curso = $req->except('_token');
-            return redirect()->back()->with('res', ['status' => 400, 'message' => 'No se pudo actualizar el curso', 'cursoErr' => $curso]);
-        }
+        return redirect()->back()->with('res', $this->curso->actualizar($id, $req));
     }
 
     public function destroy($id) {
-        try {
-            Curso::find($id)->delete();
-            return redirect()->route('beca.index')->with('res', ['status' => 200, 'message' => 'Curso eliminado con éxito']); 
-        } catch(Exception $e) {
-            return redirect()->back()->with('res', ['status' => 400, 'message' => 'No se pudo eliminar el curso']);
-        }
+        $res = $this->curso->eliminar($id);
+        if($res['status'] == 400) return redirect()->back()->with('res', $res);
+
+        return redirect()->route('beca.index')->with('res', $res); 
     }
 }

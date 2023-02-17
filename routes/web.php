@@ -37,7 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['middleware' => ['check.role:admin|contabilidad']], function () {
         //Estudiante
         Route::get('/estudiantes/{id}/becas', [EstudianteController::class, 'becaEdit'])->name('estudiante.beca.edit');
-        Route::post('/estudiantes/{id}/becas', [EstudianteController::class, 'becaUpdate'])->name('estudiante.beca.update'); 
+        Route::post('/estudiantes/{id}/becas', [EstudianteController::class, 'becaUpdate'])->name('estudiante.beca.update');
+        Route::delete('/estudiantes/{id}/becas', [EstudianteController::class, 'becaDelete'])->name('estudiante.beca.delete');
         Route::get('/estudiantes/{id}/pagos', [EstudianteController::class, 'pagos'])->name('estudiante.pagos');
         Route::post('/estudiantes/{id}/registrar-pago', [EstudianteController::class, 'storePago'])->name('pago.store');
         

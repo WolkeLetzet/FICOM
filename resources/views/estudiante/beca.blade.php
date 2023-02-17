@@ -23,6 +23,14 @@
             <label for="monto_mensual" class="form-label">Beca</label>
             <p class="form-control">{{ !is_null($estudiante->beca) ? $estudiante->beca->nombre : 'Sin asignar' }}</p>
         </div>
+
+        <div class="buttons mb-3">
+            <form action="{{route('estudiante.beca.delete', $estudiante->id)}}" method="post">
+                @method('delete')
+                @csrf
+                <button type="submit" class="btn btn-danger" @disabled(!$estudiante->beca)>Remover beca</button>
+            </form>
+        </div>
     </div>
 
     <div class="row my-3">
@@ -40,7 +48,7 @@
                     <form action="{{route('estudiante.beca.update', $estudiante->id)}}" method="post">
                         @csrf
                         <input type="hidden" name="beca_id" value="{{$beca->id}}">
-                        <button type="submit" class="btn btn-primary">Asignar beca</button>
+                        <button type="submit" class="btn btn-primary" @disabled(!is_null($estudiante->beca) && $estudiante->beca->id == $beca->id)>Asignar beca</button>
                     </form>
                 </div>
             </div>

@@ -13,7 +13,7 @@
                 <select class="form-select" name="curso" id="curso-select">
                     <option selected value="todos">Todos</option>
                     @foreach ($cursos as $curso)
-                        <option value="{{ $curso->id }}" @if (isset($_GET['curso']) && $_GET['curso'] == $curso->id) selected @endif>{{ $curso->curso . '-' . $curso->paralelo }}</option>
+                        <option value="{{ $curso->id }}" @selected(isset($_GET['curso']) && $_GET['curso'] == $curso->id)>{{ $curso->curso . '-' . $curso->paralelo }}</option>
                     @endforeach
                 </select>
             </div>
@@ -25,8 +25,8 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Nombre</th>
                     <th scope="col">Apellidos</th>
+                    <th scope="col">Nombre</th>
                     <th scope="col">RUN</th>
                     <th scope="col">Prioridad</th>
                     <th scope="col">Curso</th>
@@ -50,8 +50,8 @@
                                 @break
                         @endswitch
                     >
-                        <td>{{ $estud->nombres }}</td>
                         <td>{{ $estud->apellidos }}</td>
+                        <td>{{ $estud->nombres }}</td>
                         <td>{{ $estud->rut . '-' . $estud->dv }}</td>
                         <td>{{ $estud->prioridad }}</td>
                         <td>
