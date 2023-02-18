@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @php if(session('res') && session('res')['status'] == 400) $cursoErr = session('res')['cursoErr']; @endphp
+
 <div class="container card form-container">
     <form method="post" action="{{ route('curso.update', $curso->id) }}" id="formCurso" class="mt-3 row">
         @csrf
@@ -38,15 +39,15 @@
             @foreach ($curso->estudiantes as $estud)
                 <tr 
                     @switch ($estud->prioridad)
-                        @case('Alumno regular')
+                        @case('alumno regular')
                             class="table-light"
                             @break
                     
-                        @case('Prioritario')
+                        @case('prioritario')
                             class="table-danger"
                             @break
                 
-                        @case('Nuevo Prioritario')
+                        @case('nuevo prioritario')
                             class="table-primary"
                             @break
                     @endswitch
@@ -54,7 +55,7 @@
                     <td>{{ $estud->apellidos }}</td>
                     <td>{{ $estud->nombres }}</td>
                     <td>{{ $estud->rut . '-' . $estud->dv }}</td>
-                    <td>{{ $estud->prioridad }}</td>
+                    <td class="text-capitalize">{{ $estud->prioridad }}</td>
                     <td>
                         @if (isset($estud->curso))
                             {{ $estud->curso->curso . '-' . $estud->curso->paralelo }}

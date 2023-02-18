@@ -37,15 +37,15 @@
                 @foreach ($estudiantes as $estud)
                     <tr 
                         @switch ($estud->prioridad)
-                            @case('Alumno regular')
+                            @case('alumno regular')
                                 class="table-light"
                                 @break
                         
-                            @case('Prioritario')
+                            @case('prioritario')
                                 class="table-danger"
                                 @break
                     
-                            @case('Nuevo Prioritario')
+                            @case('nuevo prioritario')
                                 class="table-primary"
                                 @break
                         @endswitch
@@ -53,7 +53,7 @@
                         <td>{{ $estud->apellidos }}</td>
                         <td>{{ $estud->nombres }}</td>
                         <td>{{ $estud->rut . '-' . $estud->dv }}</td>
-                        <td>{{ $estud->prioridad }}</td>
+                        <td class="text-capitalize">{{ $estud->prioridad }}</td>
                         <td>
                             @if (isset($estud->curso))
                                 {{ $estud->curso->curso . '-' . $estud->curso->paralelo }}

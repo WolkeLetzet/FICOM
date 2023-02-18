@@ -16,7 +16,7 @@ class EstudianteFactory extends Factory
      */
     public function definition()
     {
-        $prioridades = ['Alumno regular', 'Prioritario', 'Nuevo Prioritario'];
+        $prioridades = ['alumno regular', 'prioritario', 'nuevo prioritario'];
         return [
             'nombres' => fake()->firstName(),
             'apellidos' => fake()->lastName(),

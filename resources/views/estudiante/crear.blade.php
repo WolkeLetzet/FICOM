@@ -45,13 +45,13 @@
             <select id="prioridad" name="prioridad" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
                 @if(isset($estudiante))
-                    <option value="Alumno regular" @if($estudiante['prioridad'] == 'Alumno regular') selected @endif>Alumno regular</option>
-                    <option value="Nuevo Prioritario" @if($estudiante['prioridad'] == 'Nuevo Prioritario') selected @endif>Nuevo Prioritario</option>
-                    <option value="Prioritario" @if($estudiante['prioridad'] == 'Prioritario') selected @endif>Proritario</option>
+                    <option value="alumno regular" @if($estudiante['prioridad'] == 'alumno regular') selected @endif>Alumno regular</option>
+                    <option value="nuevo prioritario" @if($estudiante['prioridad'] == 'nuevo prioritario') selected @endif>nuevo prioritario</option>
+                    <option value="prioritario" @if($estudiante['prioridad'] == 'prioritario') selected @endif>Proritario</option>
                 @else
-                    <option value="Alumno regular">Alumno regular</option>
-                    <option value="Nuevo Prioritario">Nuevo Prioritario</option>
-                    <option value="Prioritario">Proritario</option>
+                    <option value="alumno regular">Alumno regular</option>
+                    <option value="nuevo prioritario">Nuevo prioritario</option>
+                    <option value="prioritario">Prioritario</option>
                 @endif
             </select>
         </div>

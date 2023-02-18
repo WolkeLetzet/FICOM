@@ -26,6 +26,22 @@ class Curso extends Model
         return $this->hasMany(Estudiante::class);
     }
 
+    public function cantEstudiantes() {
+        return $this->estudiantes()->count();
+    }
+
+    public function regulares() {
+        return $this->estudiantes()->where('prioridad', 'alumno regular');
+    }
+
+    public function prioritarios() {
+        return $this->estudiantes()->where('prioridad', 'prioritario');
+    }
+
+    public function nuevosPrioritarios() {
+        return $this->estudiantes()->where('prioridad', 'nuevo prioritario');
+    }
+
     public function actualizar($id, $req) {
         try {
             Curso::find($id)->update($req->all());

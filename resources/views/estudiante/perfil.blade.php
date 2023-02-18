@@ -36,9 +36,9 @@
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="prioridad" class="form-label">Prioridad</label>
             <select name="prioridad" id="prioridad" class="form-control form-select" disabled>
-                <option value="Alumno regular" @selected($estudiante->prioridad == "Alumno regular")>Alumno regular</option>
-                <option value="Nuevo Prioritario" @selected($estudiante->prioridad == "Nuevo Prioritario")>Nuevo proritario</option>
-                <option value="Prioritario" @selected($estudiante->prioridad == "Prioritario")>Proritario</option>
+                <option value="alumno regular" @selected($estudiante->prioridad == "alumno regular")>Alumno regular</option>
+                <option value="nuevo prioritario" @selected($estudiante->prioridad == "nuevo prioritario")>Nuevo prioritario</option>
+                <option value="prioritario" @selected($estudiante->prioridad == "prioritario")>Prioritario</option>
             </select>
         </div>
         <h2 class="mt-3">Apoderado</h2> 

@@ -145,6 +145,18 @@ class Estudiante extends Model
         ];
     }
 
+    public function mesFaltante($pagos, $totalAPagar) {
+        foreach($pagos as $mes => $pagosMes) {
+            if($mes != 'matricula') {
+                if(count($pagosMes) == 0) return $mes;
+                    
+                $total = 0;
+                foreach($pagosMes as $pago) $total += $pago->valor;
+                if($total < $totalAPagar) return $mes;
+            }
+        }
+    }
+
     public function scopeSearchByName($query, $text)
     {
         if($text) $query->orWhere('nombres', 'LIKE', "%$text%");
@@ -230,7 +242,7 @@ class Estudiante extends Model
             $estudiante->dv = $rut[1];
             $estudiante->email_institucional = $request->email_institucional;
             $estudiante->prioridad = $request->prioridad;
-            if($estudiante->prioridad == 'Prioritario') $estudiante->beca()->dissociate();
+            if($estudiante->prioridad == 'prioritario') $estudiante->beca()->dissociate();
             $estudiante->curso_id = $request->nivel;
             $estudiante->telefono = $request->telefono;
             $estudiante->direccion = $request->direccion;
@@ -290,7 +302,7 @@ class Estudiante extends Model
     public function becaUpdate($id, $req) {
         try {
             $estudiante = Estudiante::find($id);
-            if($estudiante->prioridad == 'Prioritario')
+            if($estudiante->prioridad == 'prioritario')
                 return ['status' => 400, 'message' => 'No se puede asignar becas a un estudiante prioritario'];
             
             $estudiante->beca()->associate($req->beca_id)->save();

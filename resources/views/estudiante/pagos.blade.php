@@ -2,9 +2,10 @@
 @section('content')
 @php
     $descuento = 0;
-    if($estudiante->prioridad == 'Prioritario') $descuento = 0;
+    if($estudiante->prioridad == 'prioritario') $descuento = 0;
     else if(! is_null($estudiante->beca)) $descuento = $estudiante->beca->descuento;
     $total = $estudiante->curso->arancel * ($descuento / 100);
+    $mesAPagar = $estudiante->mesFaltante($estudiante->pagos_anio, $total);
 @endphp
 
 <div class="container card">
@@ -45,17 +46,17 @@
             <label for="mes" class="form-label">Mes</label>
             <select name="mes" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
-                <option value="matricula">Matrícula</option>
-                <option value="marzo">Marzo</option>
-                <option value="abril">Abril</option>
-                <option value="mayo">Mayo</option>
-                <option value="junio">Junio</option>
-                <option value="julio">Julio</option>
-                <option value="agosto">Agosto</option>
-                <option value="septiembre">Septiembre</option>
-                <option value="octubre">Octubre</option>
-                <option value="noviembre">Noviembre</option>
-                <option value="diciembre">Diciembre</option>
+                <option value="matricula" @selected($mesAPagar == 'matricula')>Matrícula</option>
+                <option value="marzo" @selected($mesAPagar == 'marzo')>Marzo</option>
+                <option value="abril" @selected($mesAPagar == 'abril')>Abril</option>
+                <option value="mayo" @selected($mesAPagar == 'mayo')>Mayo</option>
+                <option value="junio" @selected($mesAPagar == 'junio')>Junio</option>
+                <option value="julio" @selected($mesAPagar == 'julio')>Julio</option>
+                <option value="agosto" @selected($mesAPagar == 'agosto')>Agosto</option>
+                <option value="septiembre" @selected($mesAPagar == 'septiembre')>Septiembre</option>
+                <option value="octubre" @selected($mesAPagar == 'octubre')>Octubre</option>
+                <option value="noviembre" @selected($mesAPagar == 'noviembre')>Noviembre</option>
+                <option value="diciembre" @selected($mesAPagar == 'diciembre')>Diciembre</option>
             </select>
         </div>
         <div class="form-group mb-3 col-6 col-md-4">
