@@ -3,8 +3,5 @@
 @section('content')
 
 <div>
-    <div>
-        hola
-    </div>
 </div>
 @endsection
