@@ -63,43 +63,43 @@
             <label for="anio" class="form-label">Año</label>
             <select name="anio" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
-                <option value="2022" @selected(now()->year == '2022')>2022</option>
-                <option value="2023" @selected(now()->year == '2023')>2023</option>
-                <option value="2024" @selected(now()->year == '2024')>2024</option>
+                <option value="2022" @selected(old('anio') == '2022' || now()->year == '2022')>2022</option>
+                <option value="2023" @selected(old('anio') == '2023' || now()->year == '2023')>2023</option>
+                <option value="2024" @selected(old('anio') == '2024' || now()->year == '2024')>2024</option>
             </select>
         </div>
         <div class="form-group mb-3 col-6 col-md-4">
             <label for="documento" class="form-label">Documento</label>
             <select name="documento" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
-                <option value="boleta">Boleta</option>
-                <option value="recibo">Recibo</option>
+                <option value="boleta"  @selected(old('documento') == 'boleta')>Boleta</option>
+                <option value="recibo"  @selected(old('documento') == 'recibo')>Recibo</option>
             </select>
         </div>
         <div class="form-group mb-3 col-6 col-md-4">
             <label for="num_documento" class="form-label">N° Documento</label>
-            <input type="number" name="num_documento" class="form-control">
+            <input type="number" name="num_documento" class="form-control" value="{{ old('num_documento') }}">
         </div>
         <div class="form-group mb-3 col-6 col-md-4">
             <label for="fecha_pago" class="form-label">Fecha</label>
-            <input type="date" name="fecha_pago" class="form-control" value={{today()}}>
+            <input type="date" name="fecha_pago" class="form-control" value={{ old('fecha_pago') || today()}}>
         </div>
         <div class="form-group mb-3 col-6 col-md-4">
             <label for="valor" class="form-label">Valor</label>
-            <input type="number" name="valor" class="form-control">
+            <input type="number" name="valor" class="form-control" value="{{ old('valor') }}">
         </div>
         <div class="form-group mb-3 col-6 col-md-4">
             <label for="forma" class="form-label">Forma de pago</label>
             <select name="forma" class="form-control form-select">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
-                <option value="efectivo">Efectivo</option>
-                <option value="cheque">Cheque</option>
-                <option value="transferencia">Transferencia</option>
+                <option value="efectivo" @selected(old('forma') == 'efectivo')>Efectivo</option>
+                <option value="cheque" @selected(old('forma') == 'cheque')>Cheque</option>
+                <option value="transferencia" @selected(old('forma') == 'transferencia')>Transferencia</option>
             </select>
         </div>
         <div class="form-group mb-3 col-12 col-md-6">
             <label for="observacion" class="form-label">Observaciones</label>
-            <textarea name="observacion" class="form-control"></textarea>
+            <textarea name="observacion" class="form-control">{{ old('observacion') }}</textarea>
         </div>
         <div>
             <button class="btn btn-primary">Enviar</button>

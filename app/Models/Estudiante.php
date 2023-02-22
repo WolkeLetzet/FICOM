@@ -320,4 +320,59 @@ class Estudiante extends Model
             return ['status' => 400, 'message' => 'Ha ocurrido un error'];
         }
     }
+
+    public function registrosFicom($req) {
+        return [
+            'RBD' => $req['rbd'],
+            'Posee RUN' => $this->poseeRun(),
+            'RUN alumno' => $this->rut . '-' . $this->dv,
+            'DV alumno' => $this->dv,
+            'Annio mensualidad percibida' => $req['anio'],
+            'Monto total mensualidad' => $this->totalMensualidades($req['anio']),
+            'Monto total intereses y/o gastos de cobranza' => 0,
+            'Cantidad de mensualidades' => $this->mesesPagados($req['anio']),
+            'Tipo de Documento' => $req['tipoDocumento']
+        ];
+    }
+
+    public function poseeRun() {
+        if($this->rut) return 1;
+        return 2;
+    }
+
+    public function mesesPagados($anio) {
+        $cantidad = 0;
+
+        foreach($this->pagosPorAnio($anio) as $mes => $pagosMes) {
+            if($mes != 'matricula') {
+                if(count($pagosMes) == 0) continue;
+                $total = 0;
+                foreach($pagosMes as $pago) $total += $pago->valor;
+                if($total == $this->curso->arancel) $cantidad++;
+            }
+        }
+
+        return $cantidad;
+    }
+
+    public function totalMensualidades($anio) {
+        $total = 0;
+        
+        foreach($this->pagosPorAnio($anio) as $mes => $pagosMes)
+            if($mes != 'matricula') foreach($pagosMes as $pago) $total += $pago->valor;
+
+        return $total;
+    }
+
+    public function mesesPorPagar($anio) {
+        $meses = [];
+        foreach($this->pagosPorAnio($anio) as $mes => $pagosMes) {
+            $total = 0;
+            foreach($pagosMes as $pago) $total += $pago->valor;
+            if($total < $this->curso->arancel)
+                array_push($meses, ['mes' => $mes, 'pagado' => $total, 'falta' => $this->curso->arancel - $total]);
+        }
+
+        return $meses;
+    }
 }
