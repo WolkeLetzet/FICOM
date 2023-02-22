@@ -295,7 +295,7 @@ class Estudiante extends Model
             Estudiante::find($id)->pagos()->create($req->all());
             return ['status' => 200, 'message' => 'Pago registrado con éxito'];
         } catch (Exception $e) {
-            return ['status' => 400, 'message' => 'Ha ocurrido un error', 'datos' => $req->except('_token')];
+            return ['status' => 400, 'message' => 'Ha ocurrido un error'];
         }
     }
 
