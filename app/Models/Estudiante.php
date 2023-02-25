@@ -173,10 +173,19 @@ class Estudiante extends Model
 
     public function store($req)
     {
+        dd($req);
+        
+        $req->validate([
+            'title' => 'required|unique:posts|max:255',
+            'author.name' => 'required',
+            'author.description' => 'required',
+        ]);
+
         try {
             Rut::parse($req->run)->validate();
             $rut = Rut::parse($req->run)->format(Rut::FORMAT_ESCAPED);
             $rut = Rut::parse($rut)->toArray();
+
             
             //Estudiante
             $estudiante = new Estudiante();
