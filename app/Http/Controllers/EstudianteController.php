@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Apoderado;
 use App\Models\Curso;
 use App\Models\Estudiante;
 use App\Models\Beca;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Freshwork\ChileanBundle\Exceptions\InvalidFormatException;
-use Freshwork\ChileanBundle\Rut;
 
 class EstudianteController extends Controller
 {
@@ -24,8 +20,6 @@ class EstudianteController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $req)
     {   
@@ -37,7 +31,6 @@ class EstudianteController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $req)
     {
@@ -47,8 +40,7 @@ class EstudianteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
      */
     public function show($id)
     {
@@ -64,8 +56,6 @@ class EstudianteController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create(Request $req)
     {
@@ -76,7 +66,6 @@ class EstudianteController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -88,7 +77,6 @@ class EstudianteController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
      */
     public function update($id, Request $req)
     {
@@ -99,11 +87,10 @@ class EstudianteController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        return null;
     }
 
 
@@ -111,9 +98,8 @@ class EstudianteController extends Controller
     /**
      * Store massively resources in storage.
      *
-     * @param Int   $id
+     * @param int   $id
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function storePago($id, Request $req) {
         return redirect()->back()->with('res', $this->estud->storePago($id, $req));
@@ -140,12 +126,15 @@ class EstudianteController extends Controller
         return redirect()->back()->with('res', $this->estud->becaDelete($id));
     }
 
+    public function apoderadoRemove($id, $apoderado) {
+        return $this->estud->apoderadoRemove($id, $apoderado);
+    }
+
     
     /**
      * Store massively resources in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function storeMassive(Request $request)
     {

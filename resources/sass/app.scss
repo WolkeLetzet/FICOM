@@ -5,6 +5,7 @@
 @import 'variables';
 @import 'pagos';
 @import 'becas';
+@import 'estudiantes';
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
@@ -28,6 +29,10 @@
 
 .container.card {
     padding: 1.5rem 1.5rem;
+}
+
+.flc::first-letter {
+    text-transform: uppercase;
 }
 
 @keyframes alerta {

@@ -41,7 +41,7 @@
         </div>
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="run" class="form-label">RUN</label>
-            <input type="text" id="run" name="run" value="{{ old('run') }}" class="form-control @error('run') is-invalid @enderror">
+            <input type="text" id="run" name="run" value="{{ old('run') }}" placeholder="11111111-1" class="form-control @error('run') is-invalid @enderror">
                 
             @error('run')
                 <span class="invalid-feedback" role="alert">
@@ -51,29 +51,41 @@
         </div>
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="nivel" class="form-label">Nivel</label>
-            <select id="nivel" name="nivel" class="form-control form-select">
+            <select id="nivel" name="nivel" class="form-control form-select @error('nivel') is-invalid @enderror">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
                 @foreach ($cursos as $curso)
                     <option value="{{$curso->id}}" @selected(old('nivel') == $curso->id)>{{$curso->curso . '-' . $curso->paralelo}}</option>
                 @endforeach
             </select>
+
+            @error('nivel')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="form-group mb-3 col-md-4 col-6">
             <label for="prioridad" class="form-label">Prioridad</label>
-            <select id="prioridad" name="prioridad" class="form-control form-select">
+            <select id="prioridad" name="prioridad" class="form-control form-select @error('prioridad') is-invalid @enderror">
                 <option value="" selected disabled hidden>Selecciona una opción</option>
                 <option @selected(old('prioridad') == 'alumno regular') value="alumno regular">Alumno regular</option>
                 <option @selected(old('prioridad') == 'nuevo prioritario') value="nuevo prioritario">Nuevo prioritario</option>
                 <option @selected(old('prioridad') == 'prioritario') value="prioritario">Prioritario</option>
             </select>
+
+            @error('prioridad')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="row mt-3">
             <h2>Apoderado</h2>
             <div class="form-group mb-3 col-6">
                 <label for="names" class="form-label">Nombres</label>
-                <input type="text" id="names" name="names" value="{{ old('names') }}" class="form-control @error('names') is-invalid @enderror">
+                <input type="text" id="names" name="a_nombres" value="{{ old('a_nombres') }}" class="form-control @error('a_nombres') is-invalid @enderror">
                 
-                @error('names')
+                @error('a_nombres')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -81,39 +93,39 @@
             </div>
             <div class="form-group mb-3 col-6">
                 <label for="apellidos" class="form-label">Apellidos</label>
-                <input type="text" id="apellidos" name="apellidos" value="{{ old('apellidos')}}" class="form-control @error('apellidos') is-invalid @enderror">
+                <input type="text" id="apellidos" name="a_apellidos" value="{{ old('a_apellidos')}}" class="form-control @error('a_apellidos') is-invalid @enderror">
                 
-                @error('apellidos')
+                @error('a_apellidos')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
             <div class="form-group mb-3 col-6">
-                <label for="telefono" class="form-label">Teléfono</label>
-                <input type="text" id="telefono" name="telefono" value="{{ old('telefono') }}" class="form-control @error('telefono') is-invalid @enderror">
+                <label for="a_telefono" class="form-label">Teléfono</label>
+                <input type="text" id="a_telefono" name="a_telefono" value="{{ old('a_telefono') }}" class="form-control @error('a_telefono') is-invalid @enderror">
                 
-                @error('telefono')
+                @error('a_telefono')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
             <div class="form-group mb-3 col-md-6 col-12">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror">
+                <label for="a_email" class="form-label">Correo Electrónico</label>
+                <input type="email" id="a_email" name="a_email" value="{{ old('a_email') }}" class="form-control @error('a_email') is-invalid @enderror">
                 
-                @error('email')
+                @error('a_email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
             <div class="form-group mb-3 col-md-6 col-12">
-                <label for="direccion" class="form-label">Dirección</label>
-                <input type="text" id="direccion" name="direccion" value="{{ old('direccion') }}" class="form-control @error('direccion') is-invalid @enderror">
+                <label for="a_direccion" class="form-label">Dirección</label>
+                <input type="text" id="a_direccion" name="a_direccion" value="{{ old('a_direccion') }}" class="form-control @error('a_direccion') is-invalid @enderror">
                 
-                @error('direccion')
+                @error('a_direccion')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -123,10 +135,10 @@
         <div class="row mt-3">
             <h2>Apoderado suplente</h2>
             <div class="form-group mb-3 col-6">
-                <label for="sub_names" class="form-label">Nombres</label>
-                <input type="text" id="sub_names" name="sub_names" value="{{ old('sub_names') }}" class="form-control @error('sub_names') is-invalid @enderror">
+                <label for="sub_nombres" class="form-label">Nombres</label>
+                <input type="text" id="sub_nombres" name="sub_nombres" value="{{ old('sub_nombres') }}" class="form-control @error('sub_nombres') is-invalid @enderror">
                 
-                @error('sub_names')
+                @error('sub_nombres')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>

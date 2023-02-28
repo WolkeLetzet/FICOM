@@ -1,5 +1,8 @@
-function deleteSubmit() {
+function deleteSubmit(id = null) {
     if(confirm('Estas seguro?')) {
-        document.getElementById("deleteForm").submit();
+        if(!id) document.getElementById("deleteForm").submit();
+        else {
+            document.getElementById(id).submit();
+        }
     }
 }

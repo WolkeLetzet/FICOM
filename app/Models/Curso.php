@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Exception;
+use Illuminate\Validation\Rule;
 
 class Curso extends Model
 {
@@ -42,7 +44,26 @@ class Curso extends Model
         return $this->estudiantes()->where('prioridad', 'nuevo prioritario');
     }
 
+    private function rules(): array {
+        return [
+            'arancel' => 'required'
+        ];
+    }
+
+    private function messages(): array {
+        return [
+            'required' => 'El campo :attribute es obligatorio',
+        ];
+    }
+
+    private function attributes(): array {
+        return [
+            'arancel'
+        ];
+    }
+
     public function actualizar($id, $req) {
+        $req->validate($this->rules(), $this->messages(), $this->attributes());
         try {
             Curso::find($id)->update($req->all());
             return ['status' => 200, 'message' => 'Curso actualizado con éxito']; 

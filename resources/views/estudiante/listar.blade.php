@@ -53,7 +53,7 @@
                         <td>{{ $estud->apellidos }}</td>
                         <td>{{ $estud->nombres }}</td>
                         <td>{{ $estud->rut . '-' . $estud->dv }}</td>
-                        <td class="text-capitalize">{{ $estud->prioridad }}</td>
+                        <td class="flc">{{ $estud->prioridad }}</td>
                         <td>
                             @if (isset($estud->curso))
                                 {{ $estud->curso->curso . '-' . $estud->curso->paralelo }}

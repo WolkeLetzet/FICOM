@@ -8,17 +8,35 @@
         
         <div class="form-group mb-3 col-6">
             <label class="form-label" for="nombre">Nombre</label>
-            <input class="form-control" type="text" id="nombre" name="nombre" value="{{$beca['nombre']}}">
+            <input class="form-control @error('nombre') is-invalid @enderror" type="text" id="nombre" name="nombre" value="{{old('nombre') ? old('nombre') : $beca['nombre']}}">
+
+            @error('nombre')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
 
         <div class="form-group mb-3 col-6">
             <label class="form-label" for="descuento">% Descuento</label>
-            <input class="form-control" type="number" id="descuento" name="descuento" value="{{$beca['descuento']}}" min="0" max="100">
+            <input class="form-control @error('descuento') is-invalid @enderror" type="number" id="descuento" name="descuento" value="{{old('descuento') ? old('descuento') : $beca['descuento']}}" min="0" max="100">
+
+            @error('descuento')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
 
         <div class="form-group mb-3 col-12">
             <label class="form-label" for="descripcion">Descripción</label>
-            <textarea class="form-control" id="descripcion" name="descripcion">{{$beca['descripcion']}}</textarea>
+            <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion">{{old('descripcion') ? old('descripcion') : $beca['descripcion']}}</textarea>
+
+            @error('descripcion')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
 
         <div class="buttons mb-3">
